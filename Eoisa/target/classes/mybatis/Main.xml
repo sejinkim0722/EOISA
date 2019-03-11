@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ksj.bitcamp.eoisa.dto.MainDTO">
+	<update id="crawling" parameterType="MainDTO">
+		merge into DEALINFO D using (select #{url_src} URL_SRC from DUAL) U
+		on (D.URL_SRC = U.URL_SRC)
+		when matched then
+		update set WRITETIME = #{writetime}, ISENDED = #{isended}, REPLYCOUNT_SRC = #{replycount_src}, LIKEIT_SRC = #{likeit_src}, DISLIKEIT_SRC = #{dislikeit_src}
+		when not matched then
+		insert (DEALNO, SITE_SRC, URL_SRC, SITE_BUY, CATEGORY, REGION, GOODS_TITLE, GOODS_PIC, PRICE, PRICE_NAVER, MERIT, DELIEVER_FEE, WRITETIME, ISENDED, REPLYCOUNT, REPLYCOUNT_SRC, LIKEIT_SRC, DISLIKEIT_SRC, VIEWCOUNT)
+		values ((select COUNT(*) + 1 from DEALINFO), #{site_src}, #{url_src}, #{site_buy}, #{category}, #{region}, #{goods_title}, #{goods_pic}, 
+			#{price}, #{price_naver}, #{merit}, #{deliever_fee}, #{writetime}, #{isended}, 0, #{replycount_src}, #{likeit_src}, #{dislikeit_src}, 0)
+	</update>
+	
+	<select id="calc_maxpage" resultType="int">
+		select TRUNC(COUNT(*) / 10) from DEALINFO
+	</select>
+	
+	<select id="list_all" resultType="MainDTO">
+		select * from DEALINFO
+	</select>
+	
+	<select id="count_all" resultType="int">
+		select COUNT(DEALNO) from DEALINFO
+	</select>
+	
+	<select id="dealpage" resultType="MainDTO" parameterType="Map">
+		select DEALNO, SITE_SRC, URL_SRC, SITE_BUY, CATEGORY, REGION, GOODS_TITLE, GOODS_PIC, PRICE, PRICE_NAVER, MERIT, DELIEVER_FEE, WRITETIME, ISENDED, REPLYCOUNT, REPLYCOUNT_SRC, LIKEIT_SRC, DISLIKEIT_SRC, VIEWCOUNT
+		from (select ROWNUM RNUM, aa.* from (select * from DEALINFO
+		<choose>
+			<when test="title != null and title.equals('issue')">where REPLYCOUNT_SRC >= 10</when>
+			<when test="title != null and title.equals('likeit')">where LIKEIT_SRC >= 5</when>
+			<when test="title != null and title.equals('coffee')"><![CDATA[ where REGION = '국내' and to_number(regexp_replace(PRICE, '\D+')) between 1 and 5000 ]]></when>
+			<when test="title != null and title.equals('merit')"><![CDATA[ where MERIT not like '-%' and to_number(regexp_replace(MERIT, '\D+')) > 0 ]]></when>
+			<when test="keyword != null">where GOODS_TITLE like #{keyword}</when>
+			<otherwise></otherwise>
+		</choose>
+		<if test="region != null">
+			where REGION in <foreach item="region" collection="region" open="(" separator="," close=")">#{region}</foreach>
+		</if>
+		<if test="site != null">
+			and SITE_SRC not in <foreach item="site" collection="site" open="(" separator="," close=")">#{site}</foreach>
+		</if>
+		<if test="shop != null">
+			and (SITE_BUY not in <foreach item="shop" collection="shop" open="(" separator="," close=")">#{shop}</foreach> or SITE_BUY is null)
+		</if>
+		<if test="isended != null">
+			and ISENDED is null
+		</if>
+		order by (case when WRITETIME = '방금' then 1 when WRITETIME like '%분 전' then 2 when WRITETIME like '%시간 전' then 3 when WRITETIME like '%일 전' then 4 end), to_number(regexp_substr(WRITETIME, '\d+'))
+		<choose>
+			<when test="title != null and title.equals('issue')">, REPLYCOUNT_SRC desc</when>
+			<when test="title != null and title.equals('likeit')">, LIKEIT_SRC desc</when>
+			<when test="title != null and title.equals('merit')">, to_number(regexp_replace(MERIT, '\D+')) desc</when>
+			<otherwise></otherwise>
+		</choose>
+		) aa)
+		<choose>
+			<when test="rownum != null">
+				<![CDATA[ where RNUM > ${rownum[0]} and RNUM <= ${rownum[1]} ]]>
+			</when>
+			<otherwise>
+				<![CDATA[ where RNUM > ${startRownum} and RNUM <= ${endRownum} ]]>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="dealcount" resultType="int" parameterType="Map">
+		select COUNT(*) COUNT from DEALINFO
+		<choose>
+			<when test="title != null and title.equals('issue')">where REPLYCOUNT_SRC >= 10</when>
+			<when test="title != null and title.equals('likeit')">where LIKEIT_SRC >= 5</when>
+			<when test="title != null and title.equals('coffee')"><![CDATA[ where REGION = '국내' and to_number(regexp_replace(PRICE, '\D+')) between 1 and 5000 ]]></when>
+			<when test="title != null and title.equals('merit')"><![CDATA[ where MERIT not like '-%' and to_number(regexp_replace(MERIT, '\D+')) > 0 ]]></when>
+			<when test="keyword != null">where GOODS_TITLE like #{keyword}</when>
+			<otherwise></otherwise>
+		</choose>
+		<if test="region != null">
+			where REGION in <foreach item="region" collection="region" open="(" separator="," close=")">#{region}</foreach>
+		</if>
+		<if test="site != null">
+			and SITE_SRC not in <foreach item="site" collection="site" open="(" separator="," close=")">#{site}</foreach>
+		</if>
+		<if test="shop != null">
+			and (SITE_BUY not in <foreach item="shop" collection="shop" open="(" separator="," close=")">#{shop}</foreach> or SITE_BUY is null)
+		</if>
+		<if test="isended != null">
+			and ISENDED is null
+		</if>
+	</select>
+	
+	<select id="rankpage" resultType="MainDTO">
+		<![CDATA[
+			select * from (select DEALNO, SITE_SRC, URL_SRC, SITE_BUY, CATEGORY, REGION, GOODS_TITLE, GOODS_PIC, PRICE, PRICE_NAVER, MERIT, DELIEVER_FEE, WRITETIME, ISENDED, REPLYCOUNT, REPLYCOUNT_SRC, LIKEIT_SRC, DISLIKEIT_SRC, VIEWCOUNT,
+			ROW_NUMBER() OVER (order by (LIKEIT_SRC + REPLYCOUNT + REPLYCOUNT_SRC + (VIEWCOUNT / 10) - DISLIKEIT_SRC) desc) as RK from DEALINFO) where RK <= 10
+		]]>
+	</select>
+	
+	<select id="ranking" resultType="Map">
+		select DEALNO, URL_SRC, GOODS_TITLE, ROW_NUMBER() OVER (order by (LIKEIT_SRC + REPLYCOUNT + REPLYCOUNT_SRC + (VIEWCOUNT / 10) - DISLIKEIT_SRC) desc) as RK from DEALINFO
+	</select>
+	
+	
+	<select id="wishlist_check" resultType="int" parameterType="MainDTO">
+		select COUNT(DEALNO) from WISHLIST where USERNAME = #{username} and DEALNO = #{dealno}
+	</select>
+	
+	<select id="wishlist_max" resultType="int" parameterType="MainDTO">
+		select COUNT(USERNAME) from WISHLIST where USERNAME = #{username}
+	</select>
+	
+	<insert id="wishlist_insert" parameterType="MainDTO">
+		insert into WISHLIST values(WISHLIST_SEQ.nextval, #{username}, #{dealno})
+	</insert>
+	
+	<delete id="wishlist_delete" parameterType="MainDTO">
+		delete WISHLIST where USERNAME = #{username} and DEALNO = #{dealno}
+	</delete>
+	
+	<select id="wishlist" resultType="MainDTO" parameterType="String">
+		select DEALNO, GOODS_TITLE, WRITETIME from DEALINFO where DEALNO in ((select DEALNO from WISHLIST where USERNAME = #{username}))
+	</select>
+	
+	
+	<select id="url_src" resultType="String" parameterType="int">
+		select URL_SRC from DEALINFO where DEALNO = #{dealno}
+	</select>
+	
+	<update id="viewcount_up" parameterType="int">
+		update DEALINFO set VIEWCOUNT = VIEWCOUNT + 1 where DEALNO = #{dealno}
+	</update>
+	
+	
+	<select id="search" resultType="MainDTO" parameterType="String">
+		select * from DEALINFO
+		where dealno like #{sVal}
+		or site_src like #{sVal}
+		or url_src like #{sVal}
+		or site_buy like #{sVal}
+		or category like #{sVal}
+		or region like #{sVal}
+		or goods_title like #{sVal}
+		or goods_pic like #{sVal}
+		or price like #{sVal}
+		or price_naver like #{sVal}
+		or merit like #{sVal}
+		or deliever_fee like #{sVal}
+		or writetime like #{sVal}
+		or isended like #{sVal}
+		or replycount like #{sVal}
+		or replycount_src like #{sVal}
+		or likeit_src like #{sVal}
+		or dislikeit_src like #{sVal}
+		or viewcount like #{sVal}  
+	</select>
+	
+	<delete id="delete_deal" parameterType="list">
+		delete from DEALINFO where DEALNO in
+		<foreach item="dto" index="index" collection="list" open="("  close=")">
+			#{dto.dealno}
+		</foreach>
+	</delete>
+</mapper>

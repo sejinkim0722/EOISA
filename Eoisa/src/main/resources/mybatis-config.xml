@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+	<!-- DTO/VO Mapping -->
+	<typeAliases>
+		<typeAlias alias="MainDTO" type="ksj.bitcamp.eoisa.dto.MainDTO"/>
+		<typeAlias alias="ReplyDTO" type="ksj.bitcamp.eoisa.dto.ReplyDTO"/>
+		<typeAlias alias="SignDTO" type="ksj.bitcamp.eoisa.dto.SignDTO"/>
+		<typeAlias alias="BoardDTO" type="ksj.bitcamp.eoisa.dto.BoardDTO"/>
+		<typeAlias alias="NoticeBoardDTO" type="ksj.bitcamp.eoisa.dto.NoticeBoardDTO"/>
+	</typeAliases>
+		
+	<mappers>
+		<mapper resource="mybatis/Main.xml"/>
+		<mapper resource="mybatis/Reply.xml"/>
+		<mapper resource="mybatis/Sign.xml"/>
+		<mapper resource="mybatis/Board.xml"/>
+		<mapper resource="mybatis/Notice.xml"/>
+	</mappers>
+</configuration>

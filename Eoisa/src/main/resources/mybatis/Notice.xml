@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksj.bitcamp.eoisa.dto.NoticeBoardDTO">
+	<select id="list_all" resultType="NoticeBoardDTO">
+		select * from NOTICEBOARD
+	</select>
+	
+	<select id="count_all" resultType="int">
+		select count(*) from NOTICEBOARD
+	</select>
+	
+	<delete id="delete_notice" parameterType="list">
+		delete from NOTICEBOARD where ARTICLENO in
+		<foreach item="dto" index="index" collection="list" open="("  close=")">
+			#{dto.articleno}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,152 @@
+body {
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 15px;
+    background-color: #fff;
+}
+
+.signin-page {
+	width: 477px;
+	padding: 5% 0 0;
+	margin: auto;
+}
+
+.form {
+	position: relative;
+	z-index: 1;
+	max-width: 100%;
+	margin: 0 auto 100px;
+	text-align: center;
+}
+
+.form input {
+	outline: 0;
+	background-color: #fff;
+	width: 100%;
+	height: 50px;
+	border: 1px solid #ced1cc;
+	border-radius: 3px;
+	margin: 0 0 15px;
+	padding: 15px;
+	box-sizing: border-box;
+}
+
+.form button {
+	text-transform: uppercase;
+	outline: 0;
+	background: #ff5a5f;
+	width: 100%;
+	border: 0;
+	border-radius: 3px;
+	padding: 15px;
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	transistion: 0.2s;
+	cursor: pointer;
+}
+
+.form button:hover, .form button:active, .form button:focus {
+	background-color: #b23f42;
+	transition: 0.2s;
+}
+
+.form button:disabled, .form button:disabled:hover { 
+	background-color: #b23f42; 
+	opacity: 0.5;
+	cursor: progress;
+}
+
+.form .message {
+	margin: 15px 0 0;
+	color: #565a5c;
+	font-size: 14px;
+}
+
+.form .message a {
+	color: #007a87;
+	text-decoration: none;
+}
+
+.form .find_message{
+	margin: 15px 0 0;
+	color: #565a5c;
+	font-size: 14px; 
+}
+
+.form .find_message a {
+	color: #007a87;
+	text-decoration: none;
+}
+
+.form .find {
+	margin: 15px 0 0;
+	color: #565a5c;
+	font-size: 14px;
+}
+
+.form .find a {
+	color: #007a87;
+	text-decoration: none;
+}
+
+.form .findpw-form {
+	display: none;
+}
+
+.form .register-form {
+	display: none;
+}
+
+.container {
+	position: relative;
+	z-index: 1;
+	max-width: 300px;
+	margin: 0 auto;
+}
+
+.container:before, .container:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.container .info {
+	margin: 50px auto;
+	text-align: center;
+}
+
+.container .info h1 {
+	margin: 0 0 15px;
+	padding: 0;
+	font-size: 36px;
+	font-weight: 300;
+	color: #2b2d2e;
+}
+
+.container .info span {
+	color: #565a5c;
+	font-size: 12px;
+}
+
+.container .info span a {
+	color: #2b2d2e;
+	text-decoration: none;
+}
+
+.container .info span .fa {
+	color: #ff5a5f;
+}
+
+.message-box {
+	text-align: center;
+	font-weight: bold;
+}
+
+img { width: 100%; }
+
+@media (max-width: 991px) {	
+	.signin-page {
+		margin-top: 37.5%;
+		width: 80%;
+	}
+}

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksj.bitcamp.eoisa.dto.BoardDTO">
+	<select id="getFreeList" resultType="BoardDTO">
+		select * from FREEBOARD
+	</select>
+	
+	<select id="getFreeCount" resultType="int">
+		select count(*) from FREEBOARD
+	</select>
+	
+	<select id="getReviewList" resultType="BoardDTO">
+		select * from REVIEWBOARD
+	</select>
+	
+	<select id="getReviewCount" resultType="int">
+		select count(*) from REVIEWBOARD
+	</select>
+	
+	<select id="search" resultType="BoardDTO" parameterType="String">
+		select * from
+		(select * from
+			(select 
+			ARTICLENO,
+			WRITER as USERNAME,
+			null as "NICKNAME",
+			null as "PROFILE_PIC",
+			SUBJECT,
+			CONTENT, 
+			WRITEDATE,
+			REPLYCOUNT,
+			0 as "LIKEITCOUNT",
+			VIEWCOUNT,
+			(select 'NOTICEBOARD' from dual) as "TB_TITLE"
+			from (select * from NOTICEBOARD))
+		union all
+			select * from
+			(select 
+			ARTICLENO,
+			USERNAME,
+			NICKNAME,
+			PROFILE_PIC,
+			SUBJECT,
+			CONTENT, 
+			WRITEDATE,
+			REPLYCOUNT,
+			LIKEITCOUNT,
+			VIEWCOUNT,
+			(select 'FREEBOARD' from dual) as "TB_TITLE"
+			from (select * from FREEBOARD))
+		union all
+			select * from
+			(select 
+			ARTICLENO,
+			USERNAME,
+			NICKNAME,
+			PROFILE_PIC,
+			SUBJECT,
+			CONTENT, 
+			WRITEDATE,
+			REPLYCOUNT,
+			LIKEITCOUNT,
+			VIEWCOUNT,
+			(select 'REVIEWBOARD' from dual) as "TB_TITLE"
+			from (select * from REVIEWBOARD))
+		)
+		where ARTICLENO like #{sVal}
+		or USERNAME like #{sVal}
+		or NICKNAME like #{sVal}
+		or PROFILE_PIC like #{sVal}
+		or SUBJECT like #{sVal}
+		or WRITEDATE like #{sVal}
+		order by WRITEDATE desc
+	</select>
+	
+	<delete id="delete_free" parameterType="list">
+		delete from FREEBOARD where ARTICLENO in
+		<foreach item="dto" index="index" collection="list" open="("  close=")">
+			#{dto.articleno}
+		</foreach>
+	</delete>
+	
+	<delete id="delete_review" parameterType="list">
+		delete from REVIEWBOARD where ARTICLENO in
+		<foreach item="dto" index="index" collection="list" open="("  close=")">
+			#{dto.articleno}
+		</foreach>
+	</delete>
+	
+	<delete id="delSearch" parameterType="list">
+		<foreach item="dto" collection="list" separator=";" open="DECLARE BEGIN" close="; END;">
+			<choose>
+				<when test="dto.tb_title eq 'NOTICEBOARD'">
+					delete from NOTICEBOARD
+				</when>
+				<when test="dto.tb_title eq 'FREEBOARD'">
+					delete from FREEBOARD
+				</when>
+				<when test="dto.tb_title eq 'REVIEWBOARD'">
+					delete from REVIEWBOARD
+				</when>
+			</choose>
+				where ARTICLENO = #{dto.articleno}
+		</foreach>
+	</delete>
+</mapper>

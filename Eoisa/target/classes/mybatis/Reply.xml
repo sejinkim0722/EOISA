@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ksj.bitcamp.eoisa.dto.ReplyDTO">	
+	<select id="list" resultType="ReplyDTO" parameterType="int">
+		select * from REPLY_DEALINFO where DEALNO = #{dealno} order by (case when REF = 0 then REPLYNO else REF end), REPLYNO
+	</select>
+	
+	<insert id="insert" parameterType="ReplyDTO">
+		insert into REPLY_DEALINFO values(REPLY_DEALINFO_SEQ.nextval, ${dealno}, #{username}, #{nickname}, #{profile_pic}, SYSDATE, #{content}, 0, ${depth}, ${ref})
+	</insert>
+	
+	<select id="get" resultType="ReplyDTO" parameterType="int">
+		select * from REPLY_DEALINFO where REPLYNO = #{replyno}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete REPLY_DEALINFO where REPLYNO = #{replyno}
+	</delete>
+	
+	<update id="modify" parameterType="ReplyDTO">
+		update REPLY_DEALINFO set CONTENT = #{content} where REPLYNO = #{replyno}
+	</update>
+	
+	<update id="count_up" parameterType="int">
+		update DEALINFO set REPLYCOUNT = REPLYCOUNT + 1 where DEALNO = #{dealno}
+	</update>
+	
+	<update id="count_down" parameterType="int">
+		update DEALINFO set REPLYCOUNT = REPLYCOUNT - 1 where DEALNO = (select DEALNO from REPLY_DEALINFO where REPLYNO = #{replyno})
+	</update>
+	
+	<select id="likeit_check" resultType="int" parameterType="ReplyDTO">
+		select COUNT(LIKEIT) from LIKEIT_REPLY_DEALINFO where REPLYNO = #{replyno} and USERNAME = #{username}
+	</select>
+	
+	<insert id="likeit" parameterType="ReplyDTO">
+		insert into LIKEIT_REPLY_DEALINFO values(LIKEIT_REPLY_DEALINFO_SEQ.nextval, #{username}, ${replyno}, 1)
+	</insert>
+	
+	<update id="likeit_count_up" parameterType="ReplyDTO">
+		update REPLY_DEALINFO set LIKEITCOUNT = LIKEITCOUNT + 1 where REPLYNO = #{replyno}
+	</update>
+</mapper>

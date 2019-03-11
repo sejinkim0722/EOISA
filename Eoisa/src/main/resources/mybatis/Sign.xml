@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ksj.bitcamp.eoisa.dto.SignDTO">
+	<select id="userdetails" resultType="SignDTO" parameterType="String">
+		select USERNAME, NICKNAME, PASSWORD, PROFILE_PIC, PLATFORM, ENABLED, (select AUTHORITY from AUTHORITIES where USERNAME = #{username}) AUTHORITY from USERS where USERNAME = #{username}
+	</select>
+
+	<select id="username_check" resultType="int" parameterType="SignDTO">
+		select COUNT(*) USERNAME from USERS where USERNAME = #{username}
+	</select>
+	
+	<insert id="signup" parameterType="SignDTO">
+	   {
+	   		call 
+     		declare
+     		begin
+				insert into USERS values(#{username}, #{nickname}, #{password}, #{profile_pic, jdbcType=VARCHAR}, #{platform}, #{enabled});
+				insert into AUTHORITIES values(#{username}, 'USER');
+			end 
+    	} 
+	</insert>
+	
+	<select id="nickname_check" resultType="int" parameterType="String">
+		select COUNT(NICKNAME) from USERS where NICKNAME = #{nickname}
+	</select>
+	
+	<update id="modify_userinfo" parameterType="SignDTO">
+		update USERS set NICKNAME = #{nickname}<if test="password != ''">, PASSWORD = #{password}</if><if test="profile_pic != ''">, PROFILE_PIC = #{profile_pic}</if>where USERNAME = #{username}
+	</update>
+	
+	<insert id="email_auth" parameterType="map">
+		insert into EMAIL_AUTH values(#{username}, #{uuid})
+	</insert>
+	
+	<update id="verification" parameterType="map">
+		update USERS set ENABLED = 1 where USERNAME = (select USERNAME from EMAIL_AUTH where UUID = #{uuid})
+	</update>
+	
+	<update id="temp_password" parameterType="String">
+		update USERS set PASSWORD = #{uuid} where USERNAME = #{username}
+	</update>
+	
+	<select id="list_all" resultType="SignDTO" parameterType="Map">
+		select 
+			u.USERNAME,
+			u.NICKNAME,
+			u.PASSWORD,
+			u.PROFILE_PIC,
+			u.PLATFORM,
+			u.ENABLED,
+			au.AUTHORITY 
+		from USERS u, AUTHORITIES au 
+		where u.USERNAME= au.USERNAME
+		<if test="!column.equals('all')">
+			and au.authority = #{column}
+		</if>
+	</select>
+	
+	<select id="count_all" resultType="int">
+		select count(*) from USERS
+	</select>
+	
+	<select id="search" resultType="SignDTO" parameterType="String">
+		select * from
+		(select 
+			u.USERNAME,
+			u.NICKNAME,
+			u.PASSWORD,
+			u.PROFILE_PIC,
+			u.PLATFORM,
+			u.ENABLED,
+			au.AUTHORITY 
+		from USERS u, AUTHORITIES au 
+		where u.USERNAME= au.USERNAME)
+		where USERNAME like #{sVal} 
+		or NICKNAME like #{sVal}
+		or PASSWORD like #{sVal}
+		or PROFILE_PIC like #{sVal}
+		or PLATFORM like #{sVal}
+		or AUTHORITY like #{sVal} 
+	</select>
+	
+	<update id="modify" parameterType="SignDTO">
+		{
+			call 
+   			declare
+   			begin
+				update USERS set NICKNAME = #{nickname}, PROFILE_PIC = #{profile_pic, jdbcType=VARCHAR}, ENABLED = #{enabled}, PLATFORM = #{platform} where USERNAME = #{username};
+				update AUTHORITIES set AUTHORITY = #{authority} where USERNAME = #{username};
+			end
+		}	 
+	</update>
+</mapper>
