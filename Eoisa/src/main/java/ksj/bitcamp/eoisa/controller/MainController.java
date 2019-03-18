@@ -27,24 +27,23 @@ import ksj.bitcamp.eoisa.service.MainService;
 @RestController
 @EnableAsync
 @EnableScheduling
-public class MainController
-{	
+public class MainController {
 	@Autowired
 	private MainService service;
-	
+
 	@Async
-	@Scheduled(fixedDelay = 300000)
+	@Scheduled(fixedDelay = 600000)
 	public void crawling_algumon() {
 		MainDTO dto = new MainDTO();
 		service.crawling_algumonService(dto);
 	}
-	
+
 	// Main Page
 	@RequestMapping(value = "/")
 	public ModelAndView defaultMain() throws Exception {
 		return main(1);
 	}
-	
+
 	@RequestMapping(value = "/{pageNum}")
 	public ModelAndView main(@PathVariable int pageNum) {
 		int totalPage = service.paginationService(null, pageNum);
@@ -59,18 +58,18 @@ public class MainController
 		mv.addObject("ranking", ranking);
 		mv.addObject("totalPage", totalPage);
 		mv.addObject("wishlist", wishlist);
-		
+
 		return mv;
 	}
-	
+
 	// Deal Site Redirect & Increase Viewcount
 	@RequestMapping(value = "/deal/{dealno}")
 	public RedirectView deal(@PathVariable int dealno) {
 		String link = service.linkService(dealno);
-		
+
 		return new RedirectView(link);
 	}
-	
+
 	// Filtering Page
 	@RequestMapping(value = "/filter/{pageNum}")
 	public ModelAndView filter(@PathVariable int pageNum, @RequestParam MultiValueMap<String, List<String>> filters) {
@@ -79,17 +78,17 @@ public class MainController
 		List<Map<String, Integer>> ranking = service.rankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("append");
 		mv.addObject("deal", filter);
 		mv.addObject("ranking", ranking);
 		mv.addObject("totalPage", totalPage);
 		mv.addObject("wishlist", wishlist);
-		
+
 		return mv;
 	}
-	
+
 	// Rank Page
 	@RequestMapping(value = "/rank")
 	public ModelAndView rankpage() {
@@ -97,22 +96,22 @@ public class MainController
 		List<Map<String, Integer>> ranking = service.rankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");
 		mv.addObject("deal", rankpage);
 		mv.addObject("ranking", ranking);
 		mv.addObject("wishlist", wishlist);
-		
+
 		return mv;
 	}
-	
+
 	// Search Page
 	@RequestMapping(value = "/search/{keyword}")
 	public ModelAndView defaultSearch(@PathVariable("keyword") String keyword) throws Exception {
 		return search(keyword, 1);
 	}
-	
+
 	@RequestMapping(value = "/search/{keyword}/{pageNum}")
 	public ModelAndView search(@PathVariable("keyword") String keyword, @PathVariable("pageNum") int pageNum) {
 		int totalPage = service.searchPaginationService(keyword, pageNum);
@@ -120,7 +119,7 @@ public class MainController
 		List<Map<String, Integer>> ranking = service.rankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");
 		mv.addObject("keyword", keyword);
@@ -128,16 +127,16 @@ public class MainController
 		mv.addObject("ranking", ranking);
 		mv.addObject("totalPage", totalPage);
 		mv.addObject("wishlist", wishlist);
-		
+
 		return mv;
 	}
-	
+
 	// Theme Deal Page
 	@RequestMapping(value = "/theme/{title}")
 	public ModelAndView defaultTheme(@PathVariable("title") String title) throws Exception {
 		return theme(title, 1);
 	}
-	
+
 	@RequestMapping(value = "/theme/{title}/{pageNum}")
 	public ModelAndView theme(@PathVariable("title") String title, @PathVariable("pageNum") int pageNum) {
 		int totalPage = service.paginationService(title, pageNum);
@@ -145,37 +144,37 @@ public class MainController
 		List<Map<String, Integer>> ranking = service.rankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");
 		mv.addObject("deal", theme);
 		mv.addObject("ranking", ranking);
 		mv.addObject("totalPage", totalPage);
 		mv.addObject("wishlist", wishlist);
-		
+
 		return mv;
 	}
-	
+
 	// Manage Wishlist
 	@PostMapping(value = "/wishlist")
 	public ResponseEntity<String> wishlist(MainDTO dto) {
 		int result = service.manageWishlistService(dto);
-		
-		if(result == 1) {
+
+		if (result == 1) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
-		} else if(result == 0) {
+		} else if (result == 0) {
 			return new ResponseEntity<>("full", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	// Site Info Page
 	@RequestMapping(value = "/info")
 	public ModelAndView info() {
 		return new ModelAndView("info");
 	}
-	
+
 	// Access Denied Page
 	@RequestMapping(value = "/denied")
 	public ModelAndView denied() {

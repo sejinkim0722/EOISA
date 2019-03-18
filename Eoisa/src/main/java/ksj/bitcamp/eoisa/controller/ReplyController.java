@@ -20,43 +20,41 @@ import ksj.bitcamp.eoisa.service.ReplyService;
 
 @RestController
 @RequestMapping("/replies/")
-public class ReplyController 
-{
+public class ReplyController {
 	@Autowired
 	private ReplyService service;
-	
+
 	@PostMapping(value = "/new", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<String> insert(@RequestBody ReplyDTO dto) {
 		int insertCount = service.insertService(dto);
-		
+
 		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@GetMapping(value = "/lists/{dealno}", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public ResponseEntity<List<ReplyDTO>> list(@PathVariable("dealno") int dealno) {
 		return new ResponseEntity<>(service.listService(dealno), HttpStatus.OK);
 	}
-	
-	@DeleteMapping(value ="/{replyno}", produces = { MediaType.TEXT_PLAIN_VALUE })
+
+	@DeleteMapping(value = "/{replyno}", produces = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<String> delete(@PathVariable("replyno") int replyno) {
 		return service.deleteService(replyno) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH },
-		value = "/{replyno}", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
+
+	@RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH }, value = "/{replyno}", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<String> modify(@RequestBody ReplyDTO dto, @PathVariable("replyno") int replyno) {
 		dto.setReplyno(replyno);
-		
+
 		return service.modifyService(dto) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@PostMapping(value = "/likeit", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<String> likeit(@RequestBody ReplyDTO dto) {
 		int result = service.likeitService(dto);
-		
-		if(result == 1) {
+
+		if (result == 1) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
-		} else if(result == 0) {
+		} else if (result == 0) {
 			return new ResponseEntity<>("checked", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

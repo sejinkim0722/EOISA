@@ -11,16 +11,15 @@ import ksj.bitcamp.eoisa.service.FCMService;
 
 @RestController
 @EnableScheduling
-public class FCMController
-{
+public class FCMController {
 	@Autowired
 	private FCMService service;
-	
+
 	@Scheduled(fixedDelay = 300000)
-    public void push() {
+	public void push() {
 		service.pushService();
-    }
-	
+	}
+
 	@PostMapping(value = "/fcm/token", produces = "application/text;charset=UTF-8")
 	public void manageToken(@RequestParam("request") String request, @RequestParam("token") String clientToken) {
 		service.manageTokenService(request, clientToken);
