@@ -15,36 +15,40 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import ksj.bitcamp.eoisa.dto.SignDTO;
 
-public class CustomUserDetailsService implements UserDetailsService
+public class CustomUserDetailsService implements UserDetailsService 
 {
 	@Autowired
 	private SqlSession sqlSession;
-	
-    boolean enabled = true;
-    boolean accountNonExpired = true;
-    boolean credentialsNonExpired = true;
-    boolean accountNonLocked = true;
-    
-    public CustomUserDetailsService() {}
-	  
-    public CustomUserDetailsService(SqlSessionTemplate sqlSession) {
-    	this.sqlSession = sqlSession;
+
+	boolean enabled = true;
+	boolean accountNonExpired = true;
+	boolean credentialsNonExpired = true;
+	boolean accountNonLocked = true;
+
+	public CustomUserDetailsService() {}
+
+	public CustomUserDetailsService(SqlSessionTemplate sqlSession) {
+		this.sqlSession = sqlSession;
 	}
-    
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException {
-    	SignDTO user = sqlSession.selectOne("ksj.bitcamp.eoisa.dto.SignDTO.userdetails", username);
-    	if(user == null) throw new UsernameNotFoundException(username);
-    	if(user.getEnabled() == 0) throw new DisabledException(username);
-    	List<GrantedAuthority> gas = new ArrayList<GrantedAuthority>();
- 	    gas.add(new SimpleGrantedAuthority(user.getAuthority()));
- 	    return new CustomUserDetails(user.getUsername()
- 	    		,user.getPassword()
- 	    		,enabled, accountNonExpired, credentialsNonExpired, accountNonLocked
- 	    		,gas
- 	    		,user.getNickname()
- 	    		,user.getProfile_pic()
- 	    		,user.getPlatform()
-         );
-    }
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException {
+		SignDTO user = sqlSession.selectOne("ksj.bitcamp.eoisa.dto.SignDTO.userdetails", username);
+		if (user == null) throw new UsernameNotFoundException(username);
+		if (user.getEnabled() == 0) throw new DisabledException(username);
+		List<GrantedAuthority> gas = new ArrayList<GrantedAuthority>();
+		gas.add(new SimpleGrantedAuthority(user.getAuthority()));
+		
+		return new CustomUserDetails(
+				user.getUsername(), 
+				user.getPassword(), 
+				enabled, 
+				accountNonExpired, 
+				credentialsNonExpired, 
+				accountNonLocked, 
+				gas, 
+				user.getNickname(), 
+				user.getProfile_pic(), 
+				user.getPlatform());
+	}
 }

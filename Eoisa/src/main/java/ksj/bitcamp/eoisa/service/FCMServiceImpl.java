@@ -10,12 +10,12 @@ public class FCMServiceImpl implements FCMService
 {
 	@Autowired
 	private FcmDAO dao;
-	
+
 	@Override
 	public void pushService() {
 		dao.push();
 	}
-	
+
 	@Override
 	public void manageTokenService(String request, String clientToken) {
 		dao.manageToken(request, clientToken);
