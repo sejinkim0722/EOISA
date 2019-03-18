@@ -39,7 +39,7 @@ public class FcmDAOImpl implements FcmDAO
 	public void push() {		
 		try {
 			int current = sqlSession.selectOne(ns_main + ".count_all");
-			TimeUnit.MILLISECONDS.sleep(27500);
+			TimeUnit.MILLISECONDS.sleep(60000);
 			int after = sqlSession.selectOne(ns_main + ".count_all");
 			
 			if(after > current) {

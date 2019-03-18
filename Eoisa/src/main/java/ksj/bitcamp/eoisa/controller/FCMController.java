@@ -16,7 +16,7 @@ public class FCMController
 	@Autowired
 	private FCMService service;
 	
-	@Scheduled(fixedDelay = 30000)
+	@Scheduled(fixedDelay = 300000)
     public void push() {
 		service.pushService();
     }
