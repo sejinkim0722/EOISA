@@ -13,8 +13,7 @@ import ksj.bitcamp.eoisa.dto.NoticeBoardDTO;
 import ksj.bitcamp.eoisa.dto.SignDTO;
 
 @Repository
-public class AdminDAOImpl implements AdminDAO 
-{
+public class AdminDAOImpl implements AdminDAO {
 	@Autowired
 	private SqlSession sqlSession;
 	private String ns_main = "ksj.bitcamp.eoisa.dto.MainDTO";
@@ -87,9 +86,9 @@ public class AdminDAOImpl implements AdminDAO
 	public int deleteDeal(List<MainDTO> list) {
 		return sqlSession.delete(ns_main + ".delete_deal", list);
 	}
-	
+
 	public int deleteSearch(List<BoardDTO> list) {
-		return sqlSession.delete(ns_board + ".delSearch",list);
+		return sqlSession.delete(ns_board + ".delSearch", list);
 	}
 
 	// search

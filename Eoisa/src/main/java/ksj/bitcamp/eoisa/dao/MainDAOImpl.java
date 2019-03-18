@@ -28,25 +28,24 @@ import com.google.gson.JsonParser;
 import ksj.bitcamp.eoisa.dto.MainDTO;
 
 @Repository
-public class MainDAOImpl implements MainDAO
-{
+public class MainDAOImpl implements MainDAO {
 	@Autowired
 	private SqlSession sqlSession;
 	private String ns_main = "ksj.bitcamp.eoisa.dto.MainDTO";
-	
+
 	@Override
 	public void crawling_algumon(MainDTO dto) {
 		String url_algumon = "https://algumon.com/more/";
 		Elements isended = null, goods_pic = null, site_buy = null, site_src = null, goods_title = null, price = null, deliever_fee = null, writetime = null, dealinfos = null;
 		int max = sqlSession.selectOne("calc_maxpage");
-		
-		for(int p=0; p<max+1; p++) {
+
+		for (int p = 0; p < max + 1; p++) {
 			long timelaps_start = System.currentTimeMillis();
 			try {
 				Document doc = Jsoup.connect(url_algumon + p + "?types=ended").maxBodySize(0).get();
-			
+
 				Elements pbody = doc.select("li.left.clearfix.post-li");
-				for(Element el : pbody) {
+				for (Element el : pbody) {
 					isended = el.select("span.label.end");
 					goods_title = el.select("p > span.item-name > a");
 					Response res = Jsoup.connect("https://algumon.com" + goods_title.attr("href")).followRedirects(true).execute();
@@ -56,19 +55,19 @@ public class MainDAOImpl implements MainDAO
 					writetime = el.select("small.label-time");
 					site_src = el.select("span.label.site");
 					site_buy = el.select("span.label.shop > a");
-					
+
 					String region = "국내";
-					if(price.text().matches("([$]|[£]|[¥]|[€]).*")) region = "해외";
-					
+					if (price.text().matches("([$]|[£]|[¥]|[€]).*")) region = "해외";
+
 					dealinfos = el.select("span.deal-info");
 					String[] temp = dealinfos.text().split(" ");
-					String[] split = {"0", "0", "0"};
-					for(int i=0; i<temp.length; i++) split[i] = temp[i];
-					if(temp[0].trim().equals("")) split[0] = "0";
-					
+					String[] split = { "0", "0", "0" };
+					for (int i = 0; i < temp.length; i++) split[i] = temp[i];
+					if (temp[0].trim().equals("")) split[0] = "0";
+
 					String price_deal = price.text();
 					String price_naver = getNaverlprice(goods_title.text());
-					if(price_deal.contains("원") && !price_naver.equals("정보 없음") && region.equals("국내")) {
+					if (price_deal.contains("원") && !price_naver.equals("정보 없음") && region.equals("국내")) {
 						int temp_price = Integer.parseInt(price_deal.trim().replaceAll("[^0-9]", ""));
 						int temp_price_naver = Integer.parseInt(price_naver.trim().replaceAll("[^0-9]", ""));
 						String merit = String.format("%,d", (temp_price_naver - temp_price));
@@ -76,7 +75,7 @@ public class MainDAOImpl implements MainDAO
 					} else {
 						dto.setMerit("");
 					}
-					
+
 					dto.setSite_src(site_src.first().text());
 					dto.setUrl_src(res.url().toString());
 					dto.setSite_buy(site_buy.text());
@@ -92,7 +91,7 @@ public class MainDAOImpl implements MainDAO
 					dto.setReplycount_src(Integer.parseInt(split[0]));
 					dto.setLikeit_src(Integer.parseInt(split[1]));
 					dto.setDislikeit_src(Integer.parseInt(split[2]));
-					
+
 					sqlSession.update(ns_main + ".crawling", dto); // DEALINFO Upsert
 				}
 				long timelaps_end = System.currentTimeMillis();
@@ -102,59 +101,61 @@ public class MainDAOImpl implements MainDAO
 			}
 		}
 	}
-	
+
 	private static final String clientId = "";
-    private static final String clientSecret = "";
+	private static final String clientSecret = "";
+
 	private String getNaverlprice(String param) {
 		int result;
-        try {
-            String query = URLEncoder.encode(param.replaceAll("[\\p{S}\\p{P}]+", "").replaceAll("(끌올|할인|청구시|청구|배송비|배송|관세|관부가세|적용|적용시|쿠폰|포인트|무료|강추|최대|최소|NH|신한|KB|국민|스마일클럽|유니온페이)", ""), "UTF-8");
-            URL url = new URL("https://openapi.naver.com/v1/search/shop.json?query=" + query);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("X-Naver-Client-Id", clientId);
-            con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
-            int responseCode = con.getResponseCode();
-            BufferedReader br;
-            if(responseCode == 200) {
-                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            } else { 
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-            }
-            
-            JsonElement jelement = new JsonParser().parse(br);
-            JsonObject jobject = jelement.getAsJsonObject();
-            JsonArray jarray = jobject.getAsJsonArray("items");
-            jobject = jarray.get(0).getAsJsonObject();
-            result = jobject.get("lprice").getAsInt();
-            
-            br.close();
-            con.disconnect();
+		try {
+			String query = URLEncoder.encode(param.replaceAll("[\\p{S}\\p{P}]+", "")
+					.replaceAll("(끌올|할인|청구시|청구|배송비|배송|관세|관부가세|적용|적용시|쿠폰|포인트|무료|강추|최대|최소|NH|신한|KB|국민|스마일클럽|유니온페이)", ""), "UTF-8");
+			URL url = new URL("https://openapi.naver.com/v1/search/shop.json?query=" + query);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("X-Naver-Client-Id", clientId);
+			con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			if (responseCode == 200) {
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			} else {
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
 
-            return String.format("%,d", result);
-        } catch (Exception e) {
-        	return "정보 없음";
-        }
+			JsonElement jelement = new JsonParser().parse(br);
+			JsonObject jobject = jelement.getAsJsonObject();
+			JsonArray jarray = jobject.getAsJsonArray("items");
+			jobject = jarray.get(0).getAsJsonObject();
+			result = jobject.get("lprice").getAsInt();
+
+			br.close();
+			con.disconnect();
+
+			return String.format("%,d", result);
+		} catch (Exception e) {
+			return "정보 없음";
+		}
 	}
-	
+
 	@Override
 	public int pagination(String title, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("title", title);
 		int count = sqlSession.selectOne(ns_main + ".dealcount", params);
-		
+
 		return getTotalPage(count, pageNum);
 	}
-	
+
 	@Override
 	public int searchPagination(String keyword, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("keyword", "%" + keyword + "%");
 		int count = sqlSession.selectOne(ns_main + ".dealcount", params);
-		
+
 		return getTotalPage(count, pageNum);
 	}
-	
+
 	@Override
 	public int filterPagination(int pageNum, MultiValueMap<String, List<String>> filters) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -163,27 +164,29 @@ public class MainDAOImpl implements MainDAO
 		params.put("shop", filters.get("shop"));
 		params.put("isended", filters.get("isended"));
 		int count = sqlSession.selectOne(ns_main + ".dealcount", params);
-		
+
 		return getTotalPage(count, pageNum);
 	}
-	
+
 	private int getTotalPage(int count, int pageNum) {
 		int totalPage = count / 10;
-		if(count % 10 > 0) totalPage++;
-		if(totalPage < pageNum) pageNum = totalPage;
-		
+		if (count % 10 > 0)
+			totalPage++;
+		if (totalPage < pageNum)
+			pageNum = totalPage;
+
 		return totalPage;
 	}
-	
+
 	@Override
 	public List<MainDTO> deal(int pageNum) {
 		HashMap<String, Integer> params = new HashMap<String, Integer>();
 		params.put("startRownum", (pageNum - 1) * 10);
 		params.put("endRownum", ((pageNum - 1) * 10) + 10);
-		
+
 		return sqlSession.selectList(ns_main + ".dealpage", params);
 	}
-	
+
 	@Override
 	public List<MainDTO> filter(int pageNum, MultiValueMap<String, List<String>> filters) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -193,20 +196,20 @@ public class MainDAOImpl implements MainDAO
 		params.put("shop", filters.get("shop"));
 		params.put("isended", filters.get("isended"));
 		params.put("rownum", rownum);
-		
+
 		return sqlSession.selectList(ns_main + ".dealpage", params);
 	}
-	
+
 	@Override
 	public List<MainDTO> rankpage() {
 		return sqlSession.selectList(ns_main + ".rankpage");
 	}
-	
+
 	@Override
 	public List<Map<String, Integer>> ranking() {
 		return sqlSession.selectList(ns_main + ".ranking");
 	}
-	
+
 	@Override
 	public List<MainDTO> search(String keyword, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
@@ -216,42 +219,42 @@ public class MainDAOImpl implements MainDAO
 
 		return sqlSession.selectList(ns_main + ".dealpage", params);
 	}
-	
+
 	@Override
 	public List<MainDTO> theme(String title, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("title", title);
 		params.put("startRownum", Integer.toString((pageNum - 1) * 10));
 		params.put("endRownum", Integer.toString(((pageNum - 1) * 10) + 10));
-		
+
 		return sqlSession.selectList(ns_main + ".dealpage", params);
 	}
-	
+
 	@Override
 	public int manageWishlist(MainDTO dto) {
-		if((int)sqlSession.selectOne(ns_main + ".wishlist_check", dto) != 0) {
+		if ((int) sqlSession.selectOne(ns_main + ".wishlist_check", dto) != 0) {
 			return sqlSession.delete(ns_main + ".wishlist_delete", dto);
 		}
-		if((int)sqlSession.selectOne(ns_main + ".wishlist_max", dto) == 10) {
+		if ((int) sqlSession.selectOne(ns_main + ".wishlist_max", dto) == 10) {
 			return 0;
 		} else {
 			return sqlSession.insert(ns_main + ".wishlist_insert", dto);
 		}
 	}
-	
+
 	@Override
 	public List<MainDTO> wishlist(String username) {
-		if(!username.equals("anonymousUser")) {
+		if (!username.equals("anonymousUser")) {
 			return sqlSession.selectList(ns_main + ".wishlist", username);
 		} else {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String link(int dealno) {
 		sqlSession.update(ns_main + ".viewcount_up", dealno);
-		
+
 		return sqlSession.selectOne(ns_main + ".url_src", dealno);
 	}
 }
