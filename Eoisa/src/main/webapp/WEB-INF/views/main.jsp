@@ -60,26 +60,21 @@
 		</div>
 
 		<!-- MainNav -->
-		<nav class="navbar navbar-expand navbar-light top-navbar"
-			data-toggle="sticky-onscroll">
+		<nav class="navbar navbar-expand navbar-light top-navbar" data-toggle="sticky-onscroll">
 			<div class="navbar-collapse justify-content-center">
 				<ul class="navbar-nav">
-					<li class="nav-item home"><a href="/"><i
-							class="fas fa-shopping-cart"></i> 어머이건사야해</a></li>
+					<li class="nav-item home"><a href="/"><i class="fas fa-shopping-cart"></i> 어머이건사야해</a></li>
 					<li class="component-desktop" style="color: #ced1cc;">|</li>
 					<li class="nav-item rank"><a href="/rank"><i
 							class="fas fa-fire"></i> 핫딜 랭킹</a></li>
 					<li class="component-desktop" style="color: #ced1cc;">|</li>
 					<li class="nav-item theme">
 						<div class="dropdown">
-							<a data-toggle="dropdown"><i class="fas fa-lightbulb"></i> 테마
-								핫딜</a>
+							<a data-toggle="dropdown"><i class="fas fa-lightbulb"></i> 테마 핫딜</a>
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" href="/theme/issue">화제의 핫딜</a></li>
-								<li><a class="dropdown-item" href="/theme/likeit">추천 많은
-										핫딜</a></li>
-								<li><a class="dropdown-item" href="/theme/coffee">커피 한
-										잔 값 핫딜</a></li>
+								<li><a class="dropdown-item" href="/theme/likeit">추천 많은 핫딜</a></li>
+								<li><a class="dropdown-item" href="/theme/coffee">커피 한잔 값 핫딜</a></li>
 								<li><a class="dropdown-item" href="/theme/merit">핫딜 유력</a></li>
 							</ul>
 						</div>
@@ -110,7 +105,9 @@
 						</div>
 					</li>
 					<li class="component-desktop" style="color: #ced1cc;">|</li>
-					<li class="nav-item info component-desktop"><a href="/info"><i class="fas fa-info-circle"></i> 사이트 안내</a></li>
+					<li class="nav-item info component-desktop">
+						<a href="/info"><i class="fas fa-info-circle"></i> 사이트 안내</a>
+					</li>
 					<!-- 
                     <li class="nav-item community component-mobile">
                         <a href="#"> 커뮤니티</a>
@@ -166,7 +163,9 @@
 				<a href="/theme/merit">핫딜 유력</a>
 			</div>
 			<!--
-            <button class="sidenav-dropdown-btn" data-toggle="collapse" data-target=".sidenav-community-dropdown"><i class="fas fa-users"></i> 커뮤니티<i class="fas fa-caret-down"></i></button>
+            <button class="sidenav-dropdown-btn" data-toggle="collapse" data-target=".sidenav-community-dropdown">
+            	<i class="fas fa-users"></i> 커뮤니티<i class="fas fa-caret-down"></i>
+            </button>
             <div class="sidenav-community-dropdown collapse">
                 <a href="#">공지사항</a>
                 <a href="#">자유게시판</a>
@@ -427,6 +426,7 @@
 										</p>
 									</div>
 									<hr>
+									
 									<!-- Reply -->
 									<div class="reply-box-${deal.dealno}" style="display: none;">
 										<ul class="reply-list-${deal.dealno}"></ul>
@@ -494,55 +494,55 @@
 						<img src="/resources/assets/adbanner_side.png">
 					</div>
 					<!-- 
-                    <div id="recent-article-header">
-                        <h5 class="text-dark"><i class="fas fa-chalkboard"></i> Recent Articles</h5>
-                    </div>
-                    <hr>
-                    <div id="recent-article-body">
-                        <p><a href="#">공무원 합격은 에듀윌!</a></p>
-                        <p><a href="#">공인중개사 합격 ~</a></p>
-                        <p><a href="#">주택관리사 합격 ~</a></p>
-                        <p><a href="#">서울사이버대학에 다니고</a></p>
-                        <p><a href="#">나의 성공시대 시작됬다 ~</a></p>
-                    </div>
-                    <div id="recent-article-header">
-                        <h5 class="text-dark"><i class="fas fa-comments"></i> Recent Replies</h5>
-                    </div>
-                    <hr>
-                    <div id="recent-reply-body">
-                        <p><a href="#">고구마 장사가 너무 힘들어요</a></p>
-                        <p><a href="#">왜?</a></p>
-                        <p><a href="#">고구마가 너무 달아서................</a></p>
-                        <p><a href="#">뀔뀌리깔뀔꼴뀔</a></p>
-                        <p><a href="#">JMT</a></p>
-                    </div>
+					<div id="recent-article-header">
+						<h5 class="text-dark"><i class="fas fa-chalkboard"></i> Recent Articles</h5>
+					</div>
+					<hr>
+					<div id="recent-article-body">
+						<p><a href="#">공무원 합격은 에듀윌!</a></p>
+						<p><a href="#">공인중개사 합격 ~</a></p>
+						<p><a href="#">주택관리사 합격 ~</a></p>
+						<p><a href="#">서울사이버대학에 다니고</a></p>
+						<p><a href="#">나의 성공시대 시작됬다 ~</a></p>
+					</div>
+					<div id="recent-article-header">
+						<h5 class="text-dark"><i class="fas fa-comments"></i> Recent Replies</h5>
+					</div>
+					<hr>
+					<div id="recent-reply-body">
+						<p><a href="#">고구마 장사가 너무 힘들어요</a></p>
+						<p><a href="#">왜?</a></p>
+						<p><a href="#">고구마가 너무 달아서................</a></p>
+						<p><a href="#">뀔뀌리깔뀔꼴뀔</a></p>
+						<p><a href="#">JMT</a></p>
+					</div>
 					-->
 				</div>
 			</div>
 		</div>
 
 		<!-- Signin Modal -->
-        <sec:authorize access="!isAuthenticated()">
-        <div id="modal-signin" class="modal fade">
-            <div class="modal-dialog modal-sm modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-dark"><i class="fas fa-key"></i> Sign in</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div id="sign-body">
-                            <a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt=""><span id="eoisa">　어이사 로그인</span></a>
-                            <button id="social-signin-naver" class="btn btn-sign"><img src="/resources/assets/naver.png" alt=""><span id="naver">　네이버 로그인</span></button>
-                            <button id="social-signin-kakao" class="btn btn-sign"><img src="/resources/assets/kakao.png" alt=""><span id="kakao">　카카오 로그인</span></button>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-close" data-dismiss="modal">닫기</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </sec:authorize>
+		<sec:authorize access="!isAuthenticated()">
+		<div id="modal-signin" class="modal fade">
+			<div class="modal-dialog modal-sm modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title text-dark"><i class="fas fa-key"></i> Sign in</h5>
+					</div>
+					<div class="modal-body">
+						<div id="sign-body">
+							<a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt=""><span id="eoisa">　어이사 로그인</span></a>
+							<button id="social-signin-naver" class="btn btn-sign"><img src="/resources/assets/naver.png" alt=""><span id="naver">　네이버 로그인</span></button>
+							<button id="social-signin-kakao" class="btn btn-sign"><img src="/resources/assets/kakao.png" alt=""><span id="kakao">　카카오 로그인</span></button>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-close" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</sec:authorize>
 
 		<!-- Modify Userinfo Modal -->
 		<sec:authorize access="isAuthenticated()">
@@ -636,20 +636,20 @@
         
     </div>
 
-    <script src="/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="/resources/js/popper.min.js"></script>
-    <script src="/resources/js/bootstrap.min.js"></script>
-    <script src="/resources/js/bootstrap-toggle.min.js"></script>
-    <script src="/resources/js/mobile-detect.min.js"></script>
-    <script src="/resources/js/infinite-scroll.pkgd.min.js"></script>
-    <script src="/resources/js/jquery.easy-ticker.min.js"></script>
-    <script src="/resources/js/clipboard.min.js"></script>
-    <script src="/resources/js/main.js"></script>
-    <script src="/resources/js/reply.js"></script>
-    <script src="/resources/js/social-signin.js"></script>
+	<script src="/resources/js/jquery-3.3.1.min.js"></script>
+	<script src="/resources/js/popper.min.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
+	<script src="/resources/js/bootstrap-toggle.min.js"></script>
+	<script src="/resources/js/mobile-detect.min.js"></script>
+	<script src="/resources/js/infinite-scroll.pkgd.min.js"></script>
+	<script src="/resources/js/jquery.easy-ticker.min.js"></script>
+	<script src="/resources/js/clipboard.min.js"></script>
+	<script src="/resources/js/main.js"></script>
+	<script src="/resources/js/reply.js"></script>
+	<script src="/resources/js/social-signin.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-messaging.js"></script>
-    <script src="/resources/js/fcm.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-messaging.js"></script>
+	<script src="/resources/js/fcm.js"></script>
 </body>
 
 </html>
