@@ -80,19 +80,19 @@
 						</div>
 					</li>
 					<!-- 
-                    <li class="component-desktop" style="color: #ced1cc;">|</li>
-                    <li class="nav-item community component-desktop">
-                        <div class="dropdown">
-                            <a data-toggle="dropdown"><i class="fas fa-users"></i> 커뮤니티</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">공지사항</a></li>
-                                <div class="dropdown-divider"></div>
-                                <li><a class="dropdown-item" href="#">자유게시판</a></li>
-                                <li><a class="dropdown-item" href="#">후기게시판</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    -->
+					<li class="component-desktop" style="color: #ced1cc;">|</li>
+					<li class="nav-item community component-desktop">
+						<div class="dropdown">
+							<a data-toggle="dropdown"><i class="fas fa-users"></i> 커뮤니티</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">공지사항</a></li>
+								<div class="dropdown-divider"></div>
+								<li><a class="dropdown-item" href="#">자유게시판</a></li>
+								<li><a class="dropdown-item" href="#">후기게시판</a></li>
+							</ul>
+						</div>
+					</li>
+					-->
 					<li class="component-desktop" style="color: #ced1cc;">|</li>
 					<li class="nav-item notification component-desktop">
 						<div class="dropdown">
@@ -109,10 +109,10 @@
 						<a href="/info"><i class="fas fa-info-circle"></i> 사이트 안내</a>
 					</li>
 					<!-- 
-                    <li class="nav-item community component-mobile">
-                        <a href="#"> 커뮤니티</a>
-                    </li>
-                    -->
+					<li class="nav-item community component-mobile">
+						<a href="#"> 커뮤니티</a>
+					</li>
+					-->
 				</ul>
 			</div>
 		</nav>
@@ -163,15 +163,15 @@
 				<a href="/theme/merit">핫딜 유력</a>
 			</div>
 			<!--
-            <button class="sidenav-dropdown-btn" data-toggle="collapse" data-target=".sidenav-community-dropdown">
-            	<i class="fas fa-users"></i> 커뮤니티<i class="fas fa-caret-down"></i>
-            </button>
-            <div class="sidenav-community-dropdown collapse">
-                <a href="#">공지사항</a>
-                <a href="#">자유게시판</a>
-                <a href="#">후기게시판</a>
-            </div>
-            -->
+			<button class="sidenav-dropdown-btn" data-toggle="collapse" data-target=".sidenav-community-dropdown">
+				<i class="fas fa-users"></i> 커뮤니티<i class="fas fa-caret-down"></i>
+			</button>
+			<div class="sidenav-community-dropdown collapse">
+				<a href="#">공지사항</a>
+				<a href="#">자유게시판</a>
+				<a href="#">후기게시판</a>
+			</div>
+			-->
 			<a>
 				<i class="fas fa-bell"></i> 핫딜 알림
 				<input type="checkbox" data-toggle="toggle" data-onstyle="danger" data-size="mini" data-on="ON" data-off="OFF" data-width="50">
@@ -183,7 +183,7 @@
 	</header>
 
 	<!-- Main -->
-    <div id="main" class="container base">
+	<div id="main" class="container base">
 		<div class="content row">
 			<sec:authorize access="isAuthenticated()">
 				<input type="hidden" name="username" value="${userinfo.username}">
