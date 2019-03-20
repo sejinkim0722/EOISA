@@ -276,62 +276,62 @@ $(document).ready(function() {
     			$("#input-profile").val("");
     			return false;
     		} else {
-        		var reader = new FileReader();
-        		reader.onload = function(event) {
-        			// Image Resizing
-        			var image = new Image();
-        			image.onload = function() {
-            			var canvas = document.createElement("canvas");
-            			var ctx = canvas.getContext("2d");
-                        ctx.drawImage(image, 0, 0);
+    			var reader = new FileReader();
+    			reader.onload = function(event) {
+    				// Image Resizing
+    				var image = new Image();
+    				image.onload = function() {
+    					var canvas = document.createElement("canvas");
+    					var ctx = canvas.getContext("2d");
+    					ctx.drawImage(image, 0, 0);
 
-                        var MAX_WIDTH = 500;
-                        var MAX_HEIGHT = 500;
-                        var width = image.width;
-                        var height = image.height;
-                        if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-                        } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        var ctx = canvas.getContext("2d");
-                        ctx.drawImage(image, 0, 0, width, height);
+    					var MAX_WIDTH = 500;
+    					var MAX_HEIGHT = 500;
+    					var width = image.width;
+    					var height = image.height;
+    					if (width > height) {
+    						if (width > MAX_WIDTH) {
+    							height *= MAX_WIDTH / width;
+    							width = MAX_WIDTH;
+    						}
+    					} else {
+    						if (height > MAX_HEIGHT) {
+    							width *= MAX_HEIGHT / height;
+    							height = MAX_HEIGHT;
+    						}
+    					}
+    					canvas.width = width;
+    					canvas.height = height;
+    					var ctx = canvas.getContext("2d");
+    					ctx.drawImage(image, 0, 0, width, height);
                         
-                        dataURL = canvas.toDataURL(file.type, 0.5);
-            			$(".div-profile #profile-img").attr("src", dataURL);
-            			blob = dataURItoBlob(dataURL);
+    					dataURL = canvas.toDataURL(file.type, 0.5);
+    					$(".div-profile #profile-img").attr("src", dataURL);
+    					blob = dataURItoBlob(dataURL);
 
-            			ppCheck = true;
-        			}
-        			image.src = event.target.result;
-        		}
-        		reader.readAsDataURL(file);
+    					ppCheck = true;
+    				}
+    				image.src = event.target.result;
+    			}
+    			reader.readAsDataURL(file);
     		}
     		
-        	function dataURItoBlob(dataURI) {
-        	    var byteString;
-        	    if(dataURI.split(",")[0].indexOf("base64") >= 0) {
-        	        byteString = atob(dataURI.split(",")[1]);
-        	    } else {
-        	        byteString = unescape(dataURI.split(",")[1]);
-        	    }
-        	    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    		function dataURItoBlob(dataURI) {
+    			var byteString;
+    			if(dataURI.split(",")[0].indexOf("base64") >= 0) {
+    				byteString = atob(dataURI.split(",")[1]);
+    			} else {
+    				byteString = unescape(dataURI.split(",")[1]);
+    			}
+    			var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
 
-        	    var ia = new Uint8Array(byteString.length);
-        	    for(var i=0; i<byteString.length; i++) {
-        	        ia[i] = byteString.charCodeAt(i);
-        	    }
+    			var ia = new Uint8Array(byteString.length);
+    			for(var i=0; i<byteString.length; i++) {
+    				ia[i] = byteString.charCodeAt(i);
+    			}
 
-        	    return new Blob([ia], { type:mimeString });
-        	}
+    			return new Blob([ia], { type:mimeString });
+    		}
     	});
     
     	$(document).on("click", ".div-profile button", function(event) {
@@ -390,11 +390,11 @@ $(document).ready(function() {
     			}
     			$("#modal-modify-userinfo").modal("hide");
     		}).fail(function() {
-				alert("회원 정보 수정 중 문제가 발생하였습니다.\n다시 시도해 주세요.");
-				location.reload();
+    			alert("회원 정보 수정 중 문제가 발생하였습니다.\n다시 시도해 주세요.");
+    			location.reload();
     		});
     	};
-    });
+	});
     
 	// Ajax Infinite Scroll
 	var path = window.location.href + "/";
