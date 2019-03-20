@@ -2,11 +2,14 @@ $(document).ready(function() {
 	// Page Loading Overlay
 	$(".loading-overlay").fadeOut(100);
 	
+
 	// Ajax CSRF set
 	$.ajaxSetup({
-		headers : { "X-CSRF-TOKEN": $('meta[name = "_csrf_token"]').attr("content") },
-		timeout: 10000,
-		cache: false
+		headers : {
+			"X-CSRF-TOKEN" : $('meta[name = "_csrf_token"]').attr("content")
+		},
+		timeout : 10000,
+		cache : false
 	});
 	
     // Sticky Navbar
@@ -184,7 +187,7 @@ $(document).ready(function() {
     		if(username == null) return false;
     		var params = { username: username, dealno: dealno };
     		
-			$.ajax({
+    		$.ajax({
     			type: "POST",
     			url: "/wishlist",
     			data: params,
@@ -395,9 +398,9 @@ $(document).ready(function() {
     
 	// Ajax Infinite Scroll
 	var path = window.location.href + "/";
-    var param = "";
-    var lastIndex = $(".total-page").data("value");
-    var initIS = function() {
+	var param = "";
+	var lastIndex = $(".total-page").data("value");
+	var initIS = function() {
 		$("#main-content-wrapper").infiniteScroll({
 			path: function() {
 				if(this.loadCount < (lastIndex - 1)) {
@@ -410,7 +413,7 @@ $(document).ready(function() {
 			history: false
 		});
 	}
-   	initIS();
+	initIS();
    	
    	$("#main-content-wrapper").on("request.infiniteScroll", function(event) {
    		$(".loading-indicator").show();
@@ -444,7 +447,7 @@ $(document).ready(function() {
         var checkMin = function() {
         	if($("li.filter-list.active[data-key = region]").length < 1) {
         		alert("지역 필터 조건은 최소 하나가 선택되어야 합니다.");
-				return false;
+        		return false;
         	}
         }
         

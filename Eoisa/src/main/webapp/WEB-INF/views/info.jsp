@@ -7,55 +7,56 @@
 <html>
 
 <head>
-    <title>어머이건사야해</title>
+	<title>어머이건사야해</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="/resources/manifest.json">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/resources/assets/favicon.png">
-	
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/resources/css/bootstrap-toggle.min.css">
-    <link rel="stylesheet" href="/resources/css/all.min.css">
-    
-    <link rel="stylesheet" href="/resources/css/info.css">
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700&amp;subset=korean">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<!-- Manifest -->
+	<link rel="manifest" href="/resources/manifest.json">
+
+	<!-- Favicon -->
+	<link rel="icon" type="image/png" href="/resources/assets/favicon.png">
+
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/resources/css/bootstrap-toggle.min.css">
+	<link rel="stylesheet" href="/resources/css/all.min.css">
+
+	<link rel="stylesheet" href="/resources/css/info.css">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700&amp;subset=korean">
 </head>
 
 <body>
     <!-- Header -->
     <header>
         <sec:authentication var="userinfo" property="principal"/>
+        
         <!-- Page Loading Overlay -->
 		<div class="loading-overlay"></div>
-        
-    	<!-- TopNav -->
-        <div id="div-top">
-            <div id="div-top-content" class="container">
-                <div id="div-logo" class="col-lg-3 col-md-12">
-                    <button type="button" class="btn btn-sidenav-open component-mobile"></button>
-                    <a href="/">
-                    	<img class="component-desktop" src="/resources/assets/logo.png" alt="logo">
-                    	<img class="component-mobile" src="/resources/assets/logo_mobile.png" alt="logo">	
-                    </a>
-                </div>
-                <div id="div-search" class="col-lg-5 col-md-12">
-                    <form id="form-search" method="POST" action="/search">
-	                    <input type="text" name="keyword" spellcheck="false" autocomplete="off" maxlength="20">
-	                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                    <i class="fas fa-search fa-2x"></i>
-                </div>
-            </div>
-        </div>
 
-        <!-- MainNav -->
+		<!-- TopNav -->
+		<div id="div-top">
+			<div id="div-top-content" class="container">
+				<div id="div-logo" class="col-lg-3 col-md-12">
+					<button type="button" class="btn btn-sidenav-open component-mobile"></button>
+					<a href="/"> 
+						<img class="component-desktop" src="/resources/assets/logo.png" alt="logo"> 
+						<img class="component-mobile" src="/resources/assets/logo_mobile.png" alt="logo">
+					</a>
+				</div>
+				<div id="div-search" class="col-lg-5 col-md-12">
+					<form id="form-search" method="POST" action="/search">
+						<input type="text" name="keyword" spellcheck="false" autocomplete="off" maxlength="20"> 
+						<input type="hidden"name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</form>
+					<i class="fas fa-search fa-2x"></i>
+				</div>
+			</div>
+		</div>
+
+		<!-- MainNav -->
         <nav class="navbar navbar-expand navbar-light top-navbar" data-toggle="sticky-onscroll">
             <div class="navbar-collapse justify-content-center">
                 <ul class="navbar-nav">
@@ -78,7 +79,7 @@
                             </ul>
                         </div>
                     </li>
-                    <!-- 
+					<!-- 
                     <li class="component-desktop" style="color: #ced1cc;">|</li>
                     <li class="nav-item community component-desktop">
                         <div class="dropdown">
@@ -92,7 +93,7 @@
                         </div>
                     </li>
                     -->
-                    <li class="component-desktop" style="color: #ced1cc;">|</li>
+					<li class="component-desktop" style="color: #ced1cc;">|</li>
                     <li class="nav-item notification component-desktop">
                     	<div class="dropdown">
                         	<a data-toggle="dropdown"><i class="fas fa-bell"></i> 핫딜 알림</a>
@@ -176,6 +177,7 @@
             <!-- Main-Content -->
             <div id="main-content-wrapper" class="col-lg-12 col-md-12">
 				<div class="wrapper">
+				
 					<!-- Start navbar -->
 					<div id="navbar" class="navbar">
 						<ul class="nav-menu">
@@ -337,79 +339,89 @@
         
 	<!-- Modify Userinfo Modal -->
 	<sec:authorize access="isAuthenticated()">
-	<div id="modal-modify-userinfo" class="modal fade">
-		<div class="modal-dialog modal-md modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title text-dark"><i class="fas fa-user-edit"></i> 회원정보수정</h5>
-				</div>
-				<div class="modal-body">
-					<div class="userinfo-body">
-						<c:if test="${userinfo.platform eq 'EOISA'}">
-						<div class="div-username">
-							<label for="input-username"><i class="fas fa-envelope"></i> EMAIL <small>(Cannot Modify)</small></label>
-							<br>
-							<input type="text" id="input-username" name="username" autocomplete="false" spellcheck="false" maxlength="25" placeholder="${userinfo.username}" readonly>
-						</div>
-						<hr>
-						</c:if>
-						<div class="div-nickname">
-							<label for="input-nickname"><i class="fas fa-id-card"></i> NICKNAME</label>
-							<button type="button" id="btn-namecheck" class="btn btn-info btn-xs" disabled>중복체크</button>　<strong class="message-namecheck"></strong>
-							<br>
-							<input type="text" id="input-nickname" name="nickname" autocomplete="false" spellcheck="false" maxlength="10" value="${userinfo.nickname}" required>
-						</div>
-						<hr>
-						<div class="div-password">
-							<label for="input-password"><i class="fas fa-unlock"></i> PASSWORD</label>　<strong class="message-passwordcheck"></strong>
-							<br>
-							<input type="password" id="input-password" name="password" maxlength="50" placeholder="4자 이상의 숫자+영문+특수기호 조합">
-						</div>
-					<hr>
-					<c:if test="${userinfo.platform eq 'EOISA'}">
-					<div class="div-profile">
-						<label for="input-profile"><i class="fas fa-camera-retro"></i> PROFILE</label>
-						<br>
-						<c:choose>
-							<c:when test="${empty userinfo.profile_pic}"><img src="/resources/assets/profile.png" id="profile-img" class="rounded-circle" alt="profile_picture"></c:when>
-							<c:otherwise><img src="${userinfo.profile_pic}" id="profile-img" class="rounded-circle" alt="profile_picture"></c:otherwise>
-						</c:choose>
-						<form id="form-profile">
-							<input type="file" id="input-profile" name="profile_pic" formenctype="multipart/form-data" accept="image/jpeg, image/png, image/gif">
-						</form>
-						<button type="button" class="btn btn-dark">업로드</button>
+		<div id="modal-modify-userinfo" class="modal fade">
+			<div class="modal-dialog modal-md modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title text-dark">
+							<i class="fas fa-user-edit"></i> 회원정보수정
+						</h5>
 					</div>
-					<hr>
-					</c:if>
-					<div class="div-wishlist">
-						<label><i class="fas fa-heartbeat"></i> WISHLIST</label>
-						<c:if test="${empty wishlist}"><p class="text-secondary">찜한 핫딜이 없어요!</p></c:if>
-						<ul>
-						<c:forEach var="wishlist" items="${wishlist}">
-							<li class="wishes" data-dealno="${wishlist.dealno}">
-								<a href="/search/${wishlist.goods_title}">
-								<c:set var="goods_title" value="${wishlist.goods_title}"/>
-			            		<c:choose>
-			            			<c:when test="${fn:length(goods_title) ge 30}">${fn:substring(goods_title, 0, 30)} …</c:when>
-			            			<c:otherwise>${goods_title}</c:otherwise>
-			            		</c:choose>
-			            		</a>
-			            		<span class="badge badge-fill badge-secondary">${wishlist.writetime}</span>
-			            		<button type="button" class="btn btn-xs btn-light" onclick="window.open('${wishlist.url_src}')">바로가기</button>
-			            	</li>
-			            </c:forEach>
-			            </ul>
-            			<br>
-            		</div>
-            	</div>
-        	</div>
-			<div class="modal-footer">
-				<button type="button" id="btn-complete" class="btn btn-danger">수정 완료</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<div class="modal-body">
+						<div class="userinfo-body">
+							<c:if test="${userinfo.platform eq 'EOISA'}">
+								<div class="div-username">
+									<label for="input-username"><i class="fas fa-envelope"></i>EMAIL <small>(Cannot Modify)</small></label>
+									<br>
+									<input type="text" id="input-username" name="username" autocomplete="false" spellcheck="false" maxlength="25" placeholder="${userinfo.username}" readonly>
+								</div>
+								<hr>
+							</c:if>
+							<div class="div-nickname">
+								<label for="input-nickname"><i class="fas fa-id-card"></i>NICKNAME</label>
+								<button type="button" id="btn-namecheck" class="btn btn-info btn-xs" disabled>중복확인</button>
+								<strong class="message-namecheck"></strong>
+								<br>
+								<input type="text" id="input-nickname" name="nickname" autocomplete="false" spellcheck="false" maxlength="10" value="${userinfo.nickname}" required>
+							</div>
+							<hr>
+							<div class="div-password">
+								<label for="input-password"><i class="fas fa-unlock"></i>PASSWORD</label>
+								<strong class="message-passwordcheck"></strong>
+								<br>
+								<input type="password" id="input-password" name="password" maxlength="50" placeholder="4자 이상의 숫자+영문+특수기호 조합">
+							</div>
+							<hr>
+							<c:if test="${userinfo.platform eq 'EOISA'}">
+								<div class="div-profile">
+									<label for="input-profile"><i class="fas fa-camera-retro"></i> PROFILE</label>
+									<br>
+									<c:choose>
+										<c:when test="${empty userinfo.profile_pic}">
+											<img src="/resources/assets/profile.png" id="profile-img" class="rounded-circle" alt="profile_picture">
+										</c:when>
+										<c:otherwise>
+											<img src="${userinfo.profile_pic}" id="profile-img" class="rounded-circle" alt="profile_picture">
+										</c:otherwise>
+									</c:choose>
+									<form id="form-profile">
+										<input type="file" id="input-profile" name="profile_pic" formenctype="multipart/form-data" accept="image/jpeg, image/png">
+									</form>
+									<button type="button" class="btn btn-dark">업로드</button>
+								</div>
+								<hr>
+							</c:if>
+							<div class="div-wishlist">
+								<label><i class="fas fa-heartbeat"></i> WISHLIST</label>
+								<c:if test="${empty wishlist}">
+									<p class="text-secondary">찜한 핫딜이 없어요!</p>
+								</c:if>
+								<ul>
+									<c:forEach var="wishlist" items="${wishlist}">
+										<li class="wishes" data-dealno="${wishlist.dealno}">
+											<a href="/search/${wishlist.goods_title}">
+												<c:set var="goods_title" value="${wishlist.goods_title}" /> 
+												<c:choose>
+													<c:when test="${fn:length(goods_title) ge 30}">${fn:substring(goods_title, 0, 30)} …</c:when>
+													<c:otherwise>${goods_title}</c:otherwise>
+												</c:choose>
+											</a>
+											<span class="badge badge-fill badge-secondary">${wishlist.writetime}</span>
+											<button type="button" class="btn btn-xs btn-light" onclick="window.open('/deal/${wishlist.dealno}')">바로가기</button>
+										</li>
+									</c:forEach>
+								</ul>
+								<br>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="btn-complete" class="btn btn-danger">수정 완료</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	</div>
 	</sec:authorize>
 
     <script src="/resources/js/jquery-3.3.1.min.js"></script>
