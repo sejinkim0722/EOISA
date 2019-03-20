@@ -55,7 +55,7 @@
 				<p class="find">로그인 화면으로 되돌아갈까요? <a href="#"><strong>Sign In</strong></a></p>
 			</form>
 	        
-	        <form action="/signin" class="signin-form" method="POST">
+			<form action="/signin" class="signin-form" method="POST">
 				<input id="input-signin-email" type="text" name="username" placeholder="email" autocomplete="off" spellcheck="false" maxlength="50" required/>
 				<input id="input-signin-password" type="password" name="password" maxlength="50" placeholder="password" autocomplete="off" required/>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -66,10 +66,10 @@
 		</div>
 	</div>
  
-    <script src="/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="/resources/js/popper.min.js"></script>
-    <script src="/resources/js/bootstrap.min.js"></script>
-    <script src="/resources/js/sign.js"></script>
+	<script src="/resources/js/jquery-3.3.1.min.js"></script>
+	<script src="/resources/js/popper.min.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
+	<script src="/resources/js/sign.js"></script>
 </body>
 
 </html>
