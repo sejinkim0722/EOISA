@@ -182,8 +182,7 @@ public class SignController {
 		if (dto.getPassword() != "")
 			dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt())); // Password Encryption
 
-		return service.modifyService(dto) >= 1 ? new ResponseEntity<>("success", HttpStatus.OK)
-				: new ResponseEntity<>("fail", HttpStatus.OK);
+		return service.modifyService(dto) >= 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>("fail", HttpStatus.OK);
 	}
 
 	// Profile Picture Upload
@@ -196,8 +195,7 @@ public class SignController {
 		String saveFilename = "";
 
 		File dir = new File(uploadPath);
-		if (!dir.exists())
-			dir.mkdirs();
+		if (!dir.exists()) dir.mkdirs();
 
 		Iterator<String> files = mpsr.getFileNames();
 		while (files.hasNext()) {
