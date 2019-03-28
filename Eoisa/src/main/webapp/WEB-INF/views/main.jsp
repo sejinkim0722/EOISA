@@ -258,7 +258,7 @@
 								</h5>
 							</div>
 							<hr>
-							<div id="filter-body" class="collapse">
+							<div id="filter-body" class="collapse show">
 								<span class="filter-title"><i class="fas fa-globe"></i>지역</span>
 								<ul class="filter-menu region">
 									<li class="filter-list active" data-key="region" data-value="국내">국내</li>

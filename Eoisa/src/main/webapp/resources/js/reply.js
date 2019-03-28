@@ -5,7 +5,7 @@ $(document).ready(function() {
 	$(document).on("click", ".btn-toggle", function() {
 		var dealno = $(this).data("dealno");
 		showList(dealno);
-		$("div.reply-box-" + dealno).delay(500).slideToggle();
+		$("div.reply-box-" + dealno).delay(250).slideToggle();
 	});
 	
 	function showList(dealno) {
@@ -58,7 +58,7 @@ $(document).ready(function() {
 			replyService.remove(replyno);
 			setTimeout(function() { 
 				showList(dealno) 
-			}, 500);
+			}, 250);
 		} else {
 			return false;
 		}
@@ -87,7 +87,7 @@ $(document).ready(function() {
 			setTimeout(function() { 
 				showList(dealno); 
 				$("div.reply-box-" + dealno).show(); 
-			}, 500);
+			}, 250);
 		});
 	});
 	
@@ -106,7 +106,7 @@ $(document).ready(function() {
 			} else {
 				setTimeout(function() { 
 					showList(dealno) 
-				}, 500);
+				}, 250);
 			}
 		});
 	});
