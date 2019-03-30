@@ -32,7 +32,7 @@
 
 <body>
 	<div class="signin-page">
-		<a href="/"><img src="/resources/assets/logo.png"></a>
+		<a href="/"><img src="/resources/assets/logo.png" alt="logo"></a>
 		<div class="message-box">
 			<c:if test="${status eq 'fail'}"><p class="alert alert-danger">로그인에 실패하였습니다.<br>회원 정보가 존재하지 않거나, 비활성 상태의 계정입니다.</p></c:if>
 			<c:if test="${status eq 'success'}"><p class="alert alert-success">회원가입에 성공하였습니다.<br>작성하신 이메일 주소로 인증 메일을 발송하였으니 확인해 주세요.</p></c:if>

@@ -229,7 +229,7 @@
 					<!-- End navbar -->
 
 					<div id="gr-title">
-						<img src="/resources/assets/information.jpg" alt="title">
+						<img src="/resources/assets/information.jpg" alt="info_title">
 					</div>
 					<div id="gr-1" class="gr-bg bg-1">            
 						<div class="gr-contents-odd row align-items-center">
@@ -243,7 +243,7 @@
 							</div>
 						</div>
 						<div class="gr-contents-img-odd align-items-center">
-							<img src="/resources/assets/info_main.png" alt="photo">
+							<img src="/resources/assets/info_main.png" alt="info_main">
 						</div>
 					</div>
 					<div id="gr-2" class="gr-bg bg-2">
@@ -259,7 +259,7 @@
 							</div>
 						</div>
 						<div class="gr-contents-img-even align-items-center">
-							<img src="/resources/assets/info_main_1.png" alt="photo">
+							<img src="/resources/assets/info_main_1.png" alt="info_main">
 						</div>
 					</div>
 					<div id="gr-3" class="gr-bg bg-3">    
@@ -274,7 +274,7 @@
 							</div>
 						</div>
 						<div class="gr-contents-img-odd align-items-center">
-							<img src="/resources/assets/info_main_2.png" alt="photo">
+							<img src="/resources/assets/info_main_2.png" alt="info_main">
 						</div>    
 					</div>
 					<div id="gr-4" class="gr-bg bg-4">    
@@ -289,7 +289,7 @@
 							</div>
 						</div>
 						<div class="gr-contents-img-even align-items-center">
-							<img src="/resources/assets/info_coffee.png" alt="photo">
+							<img src="/resources/assets/info_coffee.png" alt="info_main">
 						</div>    
 					</div>
 					<div id="gr-5" class="gr-bg bg-5">
@@ -304,7 +304,7 @@
 							</div>
 						</div>
 						<div class="gr-contents-img-odd align-items-center">
-							<img src="/resources/assets/info_main_3.png" alt="photo">
+							<img src="/resources/assets/info_main_3.png" alt="info_main">
 						</div>
 					</div>
 					<div id="gr-6" class="gr-bg bg-6">
@@ -319,7 +319,7 @@
 							</div>
 						</div>
 						<div class="gr-contents-img-even align-items-center">
-							<img src="/resources/assets/info_main_4.png" alt="photo">
+							<img src="/resources/assets/info_main_4.png" alt="info_main">
 						</div>
 					</div>
 				</div>
@@ -337,9 +337,9 @@
 				</div>
 				<div class="modal-body">
 					<div id="sign-body">
-						<a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt=""><span id="eoisa">　어이사 로그인</span></a>
-						<button id="social-signin-naver" class="btn btn-sign"><img src="/resources/assets/naver.png" alt=""><span id="naver">　네이버 로그인</span></button>
-						<button id="social-signin-kakao" class="btn btn-sign"><img src="/resources/assets/kakao.png" alt=""><span id="kakao">　카카오 로그인</span></button>
+						<a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt="icon_eoisa"><span id="eoisa">　어이사 로그인</span></a>
+						<button id="social-signin-naver" class="btn btn-sign"><img src="/resources/assets/naver.png" alt="icon_naver"><span id="naver">　네이버 로그인</span></button>
+						<button id="social-signin-kakao" class="btn btn-sign"><img src="/resources/assets/kakao.png" alt="icon_kakao"><span id="kakao">　카카오 로그인</span></button>
 					</div>
 				</div>
 				<div class="modal-footer">

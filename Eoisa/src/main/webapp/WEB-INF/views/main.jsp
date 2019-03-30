@@ -202,12 +202,12 @@
 						</div>
 						<hr>
 						<div id="sign-body">
-							<a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt=""><span id="eoisa">어이사 로그인</span></a>
+							<a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt="icon_eoisa"><span id="eoisa">어이사 로그인</span></a>
 							<button id="social-signin-naver" class="btn btn-sign">
-								<img src="/resources/assets/naver.png" alt=""><span id="naver"> 네이버 로그인</span>
+								<img src="/resources/assets/naver.png" alt="icon_naver"><span id="naver"> 네이버 로그인</span>
 							</button>
 							<button id="social-signin-kakao" class="btn btn-sign">
-								<img src="/resources/assets/kakao.png" alt=""><span id="kakao"> 카카오 로그인</span>
+								<img src="/resources/assets/kakao.png" alt="icon_kakao"><span id="kakao"> 카카오 로그인</span>
 							</button>
 						</div>
 					</div>
@@ -386,7 +386,7 @@
 											<c:if test="${empty deal.deliever_fee}">-</c:if>${deal.deliever_fee}
 										</p>
 										<p class="naver-price">
-											<img src="/resources/assets/ns.png" alt="">
+											<img src="/resources/assets/ns.png" alt="icon_navershopping">
 											<c:choose>
 												<c:when test="${deal.price_naver eq '정보 없음'}">${deal.price_naver}</c:when>
 												<c:otherwise>${deal.price_naver}원</c:otherwise>
@@ -470,7 +470,7 @@
 					<div id="ranking-body">
 						<div class="ticker">
 							<ul>
-								<c:forEach var="ranking" items="${ranking}" end="10">
+								<c:forEach var="ranking" items="${ranking}" end="9">
 									<li>
 										<strong class="text-info">#${ranking['RK']}&nbsp;</strong>
 										<c:set var="title" value="${ranking['GOODS_TITLE']}" />
@@ -491,7 +491,7 @@
 
 				<div id="recent" class="sidebar-box">
 					<div class="ad-banner sidebar">
-						<img src="/resources/assets/adbanner_side.png">
+						<img src="/resources/assets/adbanner_side.png" alt="ad_banner_side">
 					</div>
 					<!-- 
 					<div id="recent-article-header">
@@ -531,9 +531,9 @@
 					</div>
 					<div class="modal-body">
 						<div id="sign-body">
-							<a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt=""><span id="eoisa">　어이사 로그인</span></a>
-							<button id="social-signin-naver" class="btn btn-sign"><img src="/resources/assets/naver.png" alt=""><span id="naver">　네이버 로그인</span></button>
-							<button id="social-signin-kakao" class="btn btn-sign"><img src="/resources/assets/kakao.png" alt=""><span id="kakao">　카카오 로그인</span></button>
+							<a href="/sign/form" id="signin-eoisa" class="btn btn-sign"><img src="/resources/assets/eoisa.png" alt="icon_eoisa"><span id="eoisa">　어이사 로그인</span></a>
+							<button id="social-signin-naver" class="btn btn-sign"><img src="/resources/assets/naver.png" alt="icon_naver"><span id="naver">　네이버 로그인</span></button>
+							<button id="social-signin-kakao" class="btn btn-sign"><img src="/resources/assets/kakao.png" alt="icon_kakao"><span id="kakao">　카카오 로그인</span></button>
 						</div>
 					</div>
 					<div class="modal-footer">

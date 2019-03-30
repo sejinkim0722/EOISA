@@ -90,7 +90,7 @@
 							<c:if test="${empty deal.deliever_fee}">-</c:if>${deal.deliever_fee}
 						</p>
 						<p class="naver-price">
-							<img src="/resources/assets/ns.png" alt="">
+							<img src="/resources/assets/ns.png" alt="icon_navershopping">
 							<c:choose>
 								<c:when test="${deal.price_naver eq '정보 없음'}">${deal.price_naver}</c:when>
 								<c:otherwise>${deal.price_naver}원</c:otherwise>
