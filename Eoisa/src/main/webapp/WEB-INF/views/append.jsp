@@ -4,37 +4,17 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:choose>
-	<c:when test="${fn:contains(uri, 'rank')}">
-		<c:set var="text" value="어머이건사야해 > <strong>핫딜 랭킹</strong>" />
-	</c:when>
-	<c:when test="${fn:contains(uri, 'issue')}">
-		<c:set var="text" value="어머이건사야해 > 테마 핫딜 > <strong>화제의 핫딜</strong>" />
-	</c:when>
-	<c:when test="${fn:contains(uri, 'likeit')}">
-		<c:set var="text" value="어머이건사야해 > 테마 핫딜 > <strong>추천 많은 핫딜</strong>" />
-	</c:when>
-	<c:when test="${fn:contains(uri, 'coffee')}">
-		<c:set var="text" value="어머이건사야해 > 테마 핫딜 > <strong>커피 한 잔 값 핫딜</strong>" />
-	</c:when>
-	<c:when test="${fn:contains(uri, 'merit')}">
-		<c:set var="text" value="어머이건사야해 > 테마 핫딜 > <strong>핫딜 유력</strong>" />
-	</c:when>
-	<c:when test="${fn:contains(uri, 'search')}">
-		<c:set var="text" value="어머이건사야해 > 검색 > <strong>'${keyword}'</strong>" />
+	<c:when test="${empty deal}">
+		<div class="result-info">
+			<i class="far fa-times-circle"></i> 핫딜 정보가 없습니다.
+		</div>
 	</c:when>
 	<c:otherwise>
-		<c:set var="hide" value='style="display:none"' />
-		<c:set var="text" value="" />
+		<div class="current-page-info">
+			<p>어머이건사야해 > <strong>필터링 검색</strong></p>
+		</div>
 	</c:otherwise>
 </c:choose>
-<div class="current-page-info" ${hide}>
-	<p>${text}</p>
-</div>
-<c:if test="${empty deal}">
-	<div class="result-info">
-		<i class="far fa-times-circle"></i> 핫딜 정보가 없습니다.
-	</div>
-</c:if>
 
 <p class="total-page" data-key="totalPage" data-value="${totalPage}"></p>
 <div id="main-content">
@@ -103,8 +83,8 @@
 							</small>
 						</p>
 						<p>
-							<i class="fas fa-comment-alt"></i> ${deal.replycount_src} | 
-							<i class="fas fa-thumbs-up"></i> ${deal.likeit_src} | 
+							<i class="fas fa-comment-alt"></i> ${deal.replycount_src}　|　
+							<i class="fas fa-thumbs-up"></i> ${deal.likeit_src}　|　
 							<i class="fas fa-thumbs-down"></i> ${deal.dislikeit_src}
 						</p>
 					</div>

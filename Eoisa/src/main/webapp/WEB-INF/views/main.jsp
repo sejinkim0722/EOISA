@@ -246,19 +246,19 @@
 
 				<c:set var="uri" value="${requestScope['javax.servlet.forward.request_uri']}" />
 				<c:choose>
-					<c:when test="${fn:contains(uri, 'rank') || fn:contains(uri, 'issue') || fn:contains(uri, 'likeit') || fn:contains(uri, 'coffee') || fn:contains(uri, 'merit')}"></c:when>
+					<c:when test="${fn:contains(uri, 'rank') || fn:contains(uri, 'issue') || fn:contains(uri, 'likeit') || fn:contains(uri, 'coffee') || fn:contains(uri, 'merit') || fn:contains(uri, 'search')}"></c:when>
 					<c:otherwise>
 						<div id="filter" class="sidebar-box">
 							<div id="filter-header">
 								<h5 class="text-dark">
 									<i class="fas fa-filter"></i> Filtering
 									<button class="btn btn-transparent" data-toggle="collapse" data-target="#filter-body">
-										<i class="fas fa-angle-down"></i>
+										<i class="fas fa-angle-up"></i>
 									</button>
 								</h5>
 							</div>
 							<hr>
-							<div id="filter-body" class="collapse show">
+							<div id="filter-body" class="collapse">
 								<span class="filter-title"><i class="fas fa-globe"></i>지역</span>
 								<ul class="filter-menu region">
 									<li class="filter-list active" data-key="region" data-value="국내">국내</li>
@@ -399,8 +399,8 @@
 											</small>
 										</p>
 										<p>
-											<i class="fas fa-comment-alt"></i> ${deal.replycount_src} | 
-											<i class="fas fa-thumbs-up"></i> ${deal.likeit_src} | 
+											<i class="fas fa-comment-alt"></i> ${deal.replycount_src}　|　
+											<i class="fas fa-thumbs-up"></i> ${deal.likeit_src}　|　
 											<i class="fas fa-thumbs-down"></i> ${deal.dislikeit_src}
 										</p>
 									</div>

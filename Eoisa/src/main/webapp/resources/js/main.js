@@ -62,6 +62,8 @@ $(document).ready(function() {
     $(function() {
         var md = new MobileDetect(window.navigator.userAgent);
         if(md.mobile() == null && $(document).width() > 576){
+    		$("#filter-body").addClass("show");
+    		
             var $sidebar = $(".follow"),
                 $window = $(window),
                 offset = $sidebar.offset(),
@@ -472,8 +474,9 @@ $(document).ready(function() {
         			path = this.url.substr(0, this.url.indexOf("?") - 1);
             		if($("li.filter-list.active").length == 20) {
             			param = "";
+            			$(".current-page-info").hide();
             		} else {
-                    	param = this.url.substr(this.url.indexOf("?"));
+            			param = this.url.substr(this.url.indexOf("?"));
             		}
             		lastIndex = $(".total-page").data("value");
             		initIS(); // Reinitialize Infinite Scroll
@@ -487,6 +490,6 @@ $(document).ready(function() {
     });
     
     $(document).on("click", "#filter button", function() {
-    	$(this).children().toggleClass("fa-angle-up");
+    	$(this).children().toggleClass("fa-angle-down fa-angle-up");
     });
 });
