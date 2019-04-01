@@ -109,7 +109,7 @@ public class MainDAOImpl implements MainDAO {
 		int result;
 		try {
 			String query = URLEncoder.encode(param.replaceAll("[\\p{S}\\p{P}]+", "")
-					.replaceAll("(끌올|할인|청구시|청구|배송비|배송|관세|관부가세|적용|적용시|쿠폰|포인트|무료|강추|최대|최소|NH|신한|KB|국민|스마일클럽|유니온페이)", ""), "UTF-8");
+					.replaceAll("(끌올|할인|청구시|청구|가성비|품절|배송비|배송|합배용|합배|관세|관부가세|적용|적용시|쿠폰|포인트|무료|특가|추가|강추|최대|최소|NH|신한|KB|국민|스마일클럽|유니온페이)", ""), "UTF-8");
 			URL url = new URL("https://openapi.naver.com/v1/search/shop.json?query=" + query);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");

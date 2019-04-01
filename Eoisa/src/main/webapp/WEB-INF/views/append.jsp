@@ -66,7 +66,7 @@
 						</p>
 						<p class="price">
 							<i class="far fa-credit-card"></i>
-							<c:if test="${empty deal.price}">-</c:if>${deal.price} | <i class="fas fa-truck"></i>
+							<c:if test="${empty deal.price}">-</c:if>${deal.price}　|　<i class="fas fa-truck"></i>
 							<c:if test="${empty deal.deliever_fee}">-</c:if>${deal.deliever_fee}
 						</p>
 						<p class="naver-price">
