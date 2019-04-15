@@ -475,8 +475,8 @@
 										<strong class="text-info">#${ranking['RK']}&nbsp;</strong>
 										<c:set var="title" value="${ranking['GOODS_TITLE']}" />
 										<c:choose>
-											<c:when test="${fn:length(title) ge 15}">
-												<a href="${ranking['URL_SRC']}" target="_blank">${fn:substring(title, 0, 15)}..</a>
+											<c:when test="${fn:length(title.bytes) ge 25}">
+												<a href="${ranking['URL_SRC']}" target="_blank">${fn:substring(title, 0, 13)}..</a>
 											</c:when>
 											<c:otherwise>
 												<a href="${ranking['URL_SRC']}" target="_blank">${title}</a>

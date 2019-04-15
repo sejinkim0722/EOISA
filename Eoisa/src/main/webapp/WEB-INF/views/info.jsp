@@ -195,7 +195,7 @@
 					<div id="navbar" class="navbar">
 						<ul class="nav-menu">
 							<li>
-								<a data-scroll="gr-1" href="#gr-1" class="dot active">
+								<a data-scroll="gr-1" href="#gr-1" class="dot">
 									<span>STEP 1</span>
 								</a>
 							</li>
@@ -298,7 +298,7 @@
 								<div id="border-txt5">
 									<p class="steps">STEP 5</p>
 									<br>
-									<p class="title">키워드&필터링 검색</p><br/>
+									<p class="title">키워드＆필터링 검색</p><br/>
 									<p class="cont">'검색으로 쉽고 빠르게'<br/><br/>키워드 및 필터링 검색을 통해<br/>내 관심사에 부합하는 핫딜을<br/>찾아볼 수 있습니다.</p>
 								</div>
 							</div>
