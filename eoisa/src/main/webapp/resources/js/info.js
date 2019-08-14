@@ -1,5 +1,6 @@
 $(document).ready(function() {
-	// Page Loading Overlay
+	
+	// Hide Page Loading Overlay
 	$(".loading-overlay").fadeOut(100);
 	
 	// Sidenav(Mobile) btn
@@ -36,11 +37,11 @@ $(document).ready(function() {
 
 		$('[data-toggle="sticky-onscroll"]').each(function() {
 			var sticky = $(this);
-			var stickyWrapper = $('<div>').addClass('sticky-wrapper');
+			var stickyWrapper = $("<div>").addClass("sticky-wrapper");
 			sticky.before(stickyWrapper);
-			sticky.addClass('sticky');
+			sticky.addClass("sticky");
 
-			$(window).on('scroll.sticky-onscroll resize.sticky-onscroll', function() {
+			$(window).on("scroll.sticky-onscroll resize.sticky-onscroll", function() {
 				stickyToggle(sticky, stickyWrapper, $(this));
 			});
 
@@ -82,11 +83,11 @@ $(document).ready(function() {
     
 	// Quick Link
 	$(function() {
-		var link = $('#navbar a.dot');
+		var link = $("#navbar a.dot");
 
-		link.on('click', function(e) {
+		link.on("click", function(e) {
 			var target = $($(this).attr('href'));
-			$('html, body').animate({
+			$("html, body").animate({
 				scrollTop: target.offset().top - 45
 			}, 700);
 		});

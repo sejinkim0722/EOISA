@@ -4,10 +4,10 @@
 <html>
 
 <head>
-    <title>로그인 - 어머이건사야해</title>
+	<title>로그인 - 어머이건사야해</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/resources/assets/favicon.png">
+	<!-- Favicon -->
+	<link rel="icon" type="image/png" href="/resources/assets/favicon.png">
 </head>
 
 <body>

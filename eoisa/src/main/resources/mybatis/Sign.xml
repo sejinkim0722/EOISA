@@ -6,7 +6,9 @@
 <mapper namespace="ksj.bitcamp.eoisa.dto.SignDTO">
 
 	<select id="userdetails" resultType="SignDTO" parameterType="String">
-		select USERNAME, NICKNAME, PASSWORD, PROFILE_PIC, PLATFORM, ENABLED, (select AUTHORITY from AUTHORITIES where USERNAME = #{username}) AUTHORITY from USERS where USERNAME = #{username}
+		select USERNAME, NICKNAME, PASSWORD, PROFILE_PIC, PLATFORM, ENABLED, (select AUTHORITY from AUTHORITIES where USERNAME = #{username}) AUTHORITY 
+		from USERS 
+		where USERNAME = #{username}
 	</select>
 
 	<select id="username_check" resultType="int" parameterType="SignDTO">
@@ -29,7 +31,10 @@
 	</select>
 	
 	<update id="modify_userinfo" parameterType="SignDTO">
-		update USERS set NICKNAME = #{nickname}<if test="password != ''">, PASSWORD = #{password}</if><if test="profile_pic != ''">, PROFILE_PIC = #{profile_pic}</if>where USERNAME = #{username}
+		update USERS set NICKNAME = #{nickname}
+		<if test="password != ''">, PASSWORD = #{password}</if>
+		<if test="profile_pic != ''">, PROFILE_PIC = #{profile_pic}</if>
+		where USERNAME = #{username}
 	</update>
 	
 	<insert id="email_auth" parameterType="map">

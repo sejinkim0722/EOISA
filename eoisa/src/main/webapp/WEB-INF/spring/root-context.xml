@@ -15,31 +15,31 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="dataSource" class="org.apache.tomcat.dbcp.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@"/>
-		<property name="username" value=""/>
-		<property name="password" value=""/>
+		<property name="url" value="jdbc:oracle:thin:@" />
+		<property name="username" value="" />
+		<property name="password" value="" />
 	</bean>
 	 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
-		<constructor-arg index="0" name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<constructor-arg index="0" name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
 	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<bean id="NaverLoginBO" class="ksj.bitcamp.eoisa.oauth.NaverLoginBO"/>
+	<bean id="NaverLoginBO" class="ksj.bitcamp.eoisa.oauth.NaverLoginBO" />
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com"/>
+		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value=""/>
-		<property name="password" value=""/>
+		<property name="username" value="" />
+		<property name="password" value="" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.transport.protocol">smtp</prop>
@@ -52,7 +52,7 @@
 	
 	<context:annotation-config/>
 	<context:component-scan base-package="ksj.bitcamp.eoisa">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	
 </beans>

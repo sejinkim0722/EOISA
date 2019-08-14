@@ -10,7 +10,8 @@
 	</select>
 	
 	<insert id="insert" parameterType="ReplyDTO">
-		insert into REPLY_DEALINFO values(REPLY_DEALINFO_SEQ.nextval, ${dealno}, #{username}, #{nickname}, #{profile_pic}, SYSDATE, #{content}, 0, ${depth}, ${ref})
+		insert into REPLY_DEALINFO
+		values(REPLY_DEALINFO_SEQ.nextval, ${dealno}, #{username}, #{nickname}, #{profile_pic}, SYSDATE, #{content}, 0, ${depth}, ${ref})
 	</insert>
 	
 	<select id="get" resultType="ReplyDTO" parameterType="int">

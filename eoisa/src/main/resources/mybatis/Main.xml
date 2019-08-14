@@ -12,8 +12,10 @@
 		update set WRITETIME = #{writetime}, ISENDED = #{isended}, REPLYCOUNT_SRC = #{replycount_src}, LIKEIT_SRC = #{likeit_src}, DISLIKEIT_SRC = #{dislikeit_src}
 		when not matched then
 		insert (DEALNO, SITE_SRC, URL_SRC, SITE_BUY, CATEGORY, REGION, GOODS_TITLE, GOODS_PIC, PRICE, PRICE_NAVER, MERIT, DELIEVER_FEE, WRITETIME, ISENDED, REPLYCOUNT, REPLYCOUNT_SRC, LIKEIT_SRC, DISLIKEIT_SRC, VIEWCOUNT)
-		values ((select COUNT(*) + 1 from DEALINFO), #{site_src}, #{url_src}, #{site_buy}, #{category}, #{region}, #{goods_title}, #{goods_pic}, 
-				#{price}, #{price_naver}, #{merit}, #{deliever_fee}, #{writetime}, #{isended}, 0, #{replycount_src}, #{likeit_src}, #{dislikeit_src}, 0)
+		values (
+			(select COUNT(*) + 1 from DEALINFO), #{site_src}, #{url_src}, #{site_buy}, #{category}, #{region}, #{goods_title}, #{goods_pic}, 
+			#{price}, #{price_naver}, #{merit}, #{deliever_fee}, #{writetime}, #{isended}, 0, #{replycount_src}, #{likeit_src}, #{dislikeit_src}, 0
+		)
 	</update>
 	
 	<select id="calc_maxpage" resultType="int">
@@ -95,8 +97,12 @@
 	
 	<select id="rankpage" resultType="MainDTO">
 		<![CDATA[
-			select * from (select DEALNO, SITE_SRC, URL_SRC, SITE_BUY, CATEGORY, REGION, GOODS_TITLE, GOODS_PIC, PRICE, PRICE_NAVER, MERIT, DELIEVER_FEE, WRITETIME, ISENDED, REPLYCOUNT, REPLYCOUNT_SRC, LIKEIT_SRC, DISLIKEIT_SRC, VIEWCOUNT,
-			ROW_NUMBER() OVER (order by (LIKEIT_SRC + REPLYCOUNT + REPLYCOUNT_SRC + (VIEWCOUNT / 10) - DISLIKEIT_SRC) desc) as RK from DEALINFO) where RK <= 10
+			select * 
+			from (
+				select DEALNO, SITE_SRC, URL_SRC, SITE_BUY, CATEGORY, REGION, GOODS_TITLE, GOODS_PIC, PRICE, PRICE_NAVER, MERIT, DELIEVER_FEE, WRITETIME, ISENDED, REPLYCOUNT, REPLYCOUNT_SRC, LIKEIT_SRC, DISLIKEIT_SRC, VIEWCOUNT,
+				ROW_NUMBER() OVER (order by (LIKEIT_SRC + REPLYCOUNT + REPLYCOUNT_SRC + (VIEWCOUNT / 10) - DISLIKEIT_SRC) desc) as RK from DEALINFO
+			)
+			where RK <= 10
 		]]>
 	</select>
 	

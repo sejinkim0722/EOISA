@@ -4,22 +4,22 @@
 <html>
 
 <head>
-    <title>존재하지 않는 페이지 - 어머이건사야해</title>
+	<title>존재하지 않는 페이지 - 어머이건사야해</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Manifest -->
-    <link rel="manifest" href="/resources/manifest.json">
+	<!-- Manifest -->
+	<link rel="manifest" href="/resources/manifest.json">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/resources/assets/favicon.png">
+	<!-- Favicon -->
+	<link rel="icon" type="image/png" href="/resources/assets/favicon.png">
 	
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/resources/css/all.min.css">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/resources/css/all.min.css">
     
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700&amp;subset=korean">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700&amp;subset=korean">
 	
 	<style>
 		body {

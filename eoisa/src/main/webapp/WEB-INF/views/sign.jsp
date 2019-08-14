@@ -7,25 +7,25 @@
 <html>
 
 <head>
-    <title>로그인 - 어머이건사야해</title>
+	<title>로그인 - 어머이건사야해</title>
 
-    <meta charset="utf-8">
-    <meta name="description" content="Bitcamp Project Testing"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<meta name="description" content="Bitcamp Project Testing"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- CSRF Token -->
+	<!-- CSRF Token -->
 	<meta name="_csrf_token" content="${_csrf.token}"/>
     
-    <!-- Manifest -->
-    <link rel="manifest" href="/resources/manifest.json">
+	<!-- Manifest -->
+	<link rel="manifest" href="/resources/manifest.json">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/resources/assets/favicon.png">
+	<!-- Favicon -->
+	<link rel="icon" type="image/png" href="/resources/assets/favicon.png">
 	
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="/resources/css/bootstrap.min.css">
     
-    <link rel="stylesheet" href="/resources/css/sign.css">
+	<link rel="stylesheet" href="/resources/css/sign.css">
     
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700&amp;subset=korean">
 </head>
@@ -40,7 +40,7 @@
 		</div>
 		<div class="form">
 			<form class="register-form">
-				<input id="input-signup-email" type="text" name="username" placeholder="email" autocomplete="off" spellcheck="false" maxlength="50" data-toggle="popover" data-content="올바른 이메일 주소 형식이 아닙니다."/>
+				<input id="input-signup-email" type="text" name="username" placeholder="email" autocomplete="off" spellcheck="false" maxlength="50"/>
 				<input id="input-signup-nickname" type="text" name="nickname" placeholder="nickname" autocomplete="off" spellcheck="false" maxlength="10" data-toggle="popover" data-content="닉네임은 최소 2글자, 최대 10글자까지 허용됩니다."/>
 				<input id="input-signup-password" type="password" name="password" maxlength="16" placeholder="password" autocomplete="off" data-toggle="popover" data-content="비밀번호는 4글자 이상의 영문, 숫자, 특수기호 조합이어야 합니다."/>
 				<input id="input-signup-platform" type="hidden" name="platform" value="EOISA"/>

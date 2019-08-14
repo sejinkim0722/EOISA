@@ -1,5 +1,6 @@
 $(document).ready(function() {
-	// Page Loading Overlay
+	
+	// Hide Page Loading Overlay
 	$(".loading-overlay").fadeOut(100);
 	
 	// Ajax CSRF set
@@ -161,7 +162,6 @@ $(document).ready(function() {
                 return false;
             } else {
             	$(this).attr("action", "/search/" + $("input[name = keyword]").val());
-                return true;
             }
         });
     });
@@ -193,7 +193,7 @@ $(document).ready(function() {
     			url: "/wishlist",
     			data: params,
     			success: function(result) {
-    				if(result == 'full') {
+    				if(result == "full") {
     					alert("최대 10개의 핫딜만 찜 목록에 추가할 수 있습니다.");
     					return false;
     				} else {
@@ -201,7 +201,7 @@ $(document).ready(function() {
     				}
     			},
     			error: function() {
-    				alert("핫딜 목록 추가 중 문제가 발생하였습니다.\n다시 시도해 주세요.");
+    				alert("찜 목록 추가 중 문제가 발생하였습니다.\n다시 시도해 주세요.");
     				return false;
     			}
     		});
@@ -210,20 +210,20 @@ $(document).ready(function() {
     
     // Modify Userinfo
     $(function() {
-    	var nmCheck = true;
-    	var pwCheck = true;
+    	var nameCheck = true;
+    	var passCheck = true;
     	
     	// Nickname Duplicate Check Button
     	$(document).on("change keyup paste", "#input-nickname", function() {
     		if($("#input-nickname").val() == $("input[name = 'nickname'").val()) {
     			$("#btn-namecheck").prop("disabled", true);
-    			nmCheck = true;
+    			nameCheck = true;
     		} else if($("#input-nickname").val().trim() == "") { 
     			$("#btn-namecheck").prop("disabled", true);
-    			nmCheck = false;
+    			nameCheck = false;
     		} else {
     			$("#btn-namecheck").prop("disabled", false);
-    			nmCheck = false;
+    			nameCheck = false;
     		}
     	});
     	
@@ -234,35 +234,33 @@ $(document).ready(function() {
 	    		if(data == "duplicated") {
 	    			$(".message-namecheck").css("color", "#ff5a5f");
 	    			$(".message-namecheck").html("이미 존재하는 닉네임입니다.");
-	    			nmCheck = false;
+	    			nameCheck = false;
 	    		} else {
 	    			$(".message-namecheck").css("color", "#8ce071");
 	    			$(".message-namecheck").html("사용 가능한 닉네임입니다.");
-	    			nmCheck = true;
+	    			nameCheck = true;
 	    		}
 	    	});
 	    });
 	    
 	    // Password Check
-	    var pw_regex = new RegExp("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$");
+	    const passRegex = new RegExp("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$");
     	$(document).on("change keyup paste", "#input-password", function() {
     		var password = $("#input-password").val();
-    		if(pw_regex.test(password)) {
-    			$(".message-passwordcheck").css("color", "#8ce071");
-    			$(".message-passwordcheck").html("사용 가능한 비밀번호입니다.");
-    			pwCheck = true;
-    		} else if(!pw_regex.test(password) && password == "") {
+    		if(passRegex.test(password)) {
+    			$(".message-passwordcheck").css("color", "#8ce071").html("사용 가능한 비밀번호입니다.");
+    			passCheck = true;
+    		} else if(!passRegex.test(password) && password == "") {
     			$(".message-passwordcheck").html("");
-    			pwCheck = true;
+    			passCheck = true;
     		} else {
-    			$(".message-passwordcheck").css("color", "#ff5a5f");
-    			$(".message-passwordcheck").html("잘못된 비밀번호 형식입니다.");
-    			pwCheck = false;
+    			$(".message-passwordcheck").css("color", "#ff5a5f").html("잘못된 비밀번호 형식입니다.");
+    			passCheck = false;
     		}
     	});
     	
     	// Profile Image Upload
-    	var ppCheck = false;
+    	var profileCheck = false;
     	var uploadedFilePath = "";
     	var blob;
     	$(document).on("change", "#input-profile", function(event) {
@@ -286,8 +284,8 @@ $(document).ready(function() {
     					var ctx = canvas.getContext("2d");
     					ctx.drawImage(image, 0, 0);
 
-    					var MAX_WIDTH = 500;
-    					var MAX_HEIGHT = 500;
+    					const MAX_WIDTH = 500;
+    					const MAX_HEIGHT = 500;
     					var width = image.width;
     					var height = image.height;
     					if (width > height) {
@@ -310,7 +308,7 @@ $(document).ready(function() {
     					$(".div-profile #profile-img").attr("src", dataURL);
     					blob = dataURItoBlob(dataURL);
 
-    					ppCheck = true;
+    					profileCheck = true;
     				}
     				image.src = event.target.result;
     			}
@@ -337,7 +335,7 @@ $(document).ready(function() {
     
     	$(document).on("click", ".div-profile button", function(event) {
     		$(".div-profile button").prop("disabled", true);
-    		if(ppCheck == true) {
+    		if(profileCheck) {
     			var formData = new FormData($("#form-profile")[0]);
     			formData.set("profile_pic", blob);
     			$.ajax({
@@ -366,7 +364,7 @@ $(document).ready(function() {
     	
     	// Modify Submit
     	$(document).on("click", "#btn-complete", function(event) {
-    		if(nmCheck == true && pwCheck == true) {
+    		if(nameCheck && passCheck) {
     			var params = { 
     				username: $("input[name = 'username']").val(), 
     				nickname: $("#input-nickname").val(), 
@@ -374,9 +372,9 @@ $(document).ready(function() {
     				profile_pic: uploadedFilePath
     			};
     			modify(params);
-    		} else if(nmCheck == false) {
+    		} else if(nameCheck == false) {
     			alert("닉네임 중복 확인 여부를 확인해 주세요.");
-    		} else if(pwCheck == false) {
+    		} else if(passCheck == false) {
     			alert("비밀번호 형식을 확인해 주세요.");
     		}
     	});
@@ -386,7 +384,7 @@ $(document).ready(function() {
     			if(result == "success") {
     				alert("회원 정보가 정상적으로 수정되었습니다.\n변경 사항은 다음 로그인부터 적용됩니다.");
     			} else if(result == "fail") {
-    				alert("회원 정보가 정상적으로 수정되지 않았습니다.\n다시 시도해 주세요.");
+    				alert("회원 정보 수정에 실패하였습니다.\n다시 시도해 주세요.");
     				location.reload();
     			}
     			$("#modal-modify-userinfo").modal("hide");
@@ -424,7 +422,7 @@ $(document).ready(function() {
    		$(".loading-indicator").hide();
    	});
     
-    // Filtering
+    // Filtering Search
     $(function() {
         var scanFilterList = function() {
         	var selected = { regions:[], sites:[], shops:[], isended:[] };
@@ -445,7 +443,7 @@ $(document).ready(function() {
 		    return selected;
         }
         
-        var checkMin = function() {
+        var minCheck = function() {
         	if($("li.filter-list.active[data-key = region]").length < 1) {
         		alert("지역 필터 조건은 최소 하나가 선택되어야 합니다.");
         		return false;
@@ -455,7 +453,7 @@ $(document).ready(function() {
         $.ajaxSettings.traditional = true;
         $(".filter-list").click(function() {
             $(this).toggleClass("active");
-        	if(checkMin() == false) {
+        	if(minCheck() == false) {
         		$(this).toggleClass("active");
         		return false;
         	}
