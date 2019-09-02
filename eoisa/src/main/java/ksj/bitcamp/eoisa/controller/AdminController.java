@@ -26,23 +26,25 @@ public class AdminController {
 	private AdminService service;
 	
 	@RequestMapping(value = "/main")
-	public ModelAndView adMain() {
+	public ModelAndView main() {
 		ModelAndView mv = new ModelAndView("admin");
-		long noticeCount=service.getMemberCount();
-		long freeCount=service.getFreeCount();
-		long reviewCount=service.getReviewCount();
-		mv.addObject("memberCount",service.getMemberCount());
+		long noticeCount = service.getUserCount();
+		long freeCount = service.getFreeCount();
+		long reviewCount = service.getReviewCount();
+		
+		mv.addObject("memberCount", service.getUserCount());
 		//mv.addObject("noticeCount", noticeCount);
 		//mv.addObject("freeCount", freeCount);
 		//mv.addObject("reviewCount", reviewCount);
 		mv.addObject("boardCount", noticeCount+freeCount+reviewCount);
 		mv.addObject("dealCount", service.getDealCount());
+		
 		return mv;
 	}
 	
-	//search용 결과
+	// search용 결과
 	@RequestMapping(value = "/search/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object searchRes(@PathVariable(value = "type")String type, @RequestParam(value = "sVal") String sVal) {
+	public @ResponseBody Object searchRes(@PathVariable(value = "type") String type, @RequestParam(value = "sVal") String sVal) {
 		sVal = "%"+sVal+"%";
 		if(type.equals("member")) {
 			return service.searchMemberlist(sVal);
@@ -54,11 +56,11 @@ public class AdminController {
 		return null;
 	}
 		
-	//테이블 select용 url
+	// 테이블 select용 url
 	@RequestMapping(value = "/json/{type}/{column}", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object selectRes(@PathVariable(value = "type") String type,@PathVariable(value = "column")String column) {
+	public @ResponseBody Object selectRes(@PathVariable(value = "type") String type, @PathVariable(value = "column") String column) {
 		if(type.equals("member")) {
-			return service.getMemberAll(column);
+			return service.getUserAll(column);
 		} else if(type.equals("board")) {
 			if(column.equals("notice")) {
 				return service.getNoticeAll();
@@ -71,8 +73,9 @@ public class AdminController {
 		return null;
 	}
 	
-	public List<BoardDTO> makeBoard(String column){
+	public List<BoardDTO> makeBoard(String column) {
 		List<BoardDTO> list;
+		
 		if(column.equals("free")) {
 			list=service.getFreeAll();
 		} else {

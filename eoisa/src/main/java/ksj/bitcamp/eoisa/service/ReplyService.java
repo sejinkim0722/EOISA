@@ -6,10 +6,10 @@ import ksj.bitcamp.eoisa.dto.ReplyDTO;
 
 public interface ReplyService {
 	
-	int insertService(ReplyDTO dto);
-	List<ReplyDTO> listService(int dealno);
-	int deleteService(int replyno);
-	int modifyService(ReplyDTO dto);
-	int likeitService(ReplyDTO dto);
+	int insertReplyService(ReplyDTO dto);
+	List<ReplyDTO> getReplylistService(int dealno);
+	int deleteReplyService(int replyno);
+	int modifyReplyService(ReplyDTO dto);
+	int manageReplyLikeitService(ReplyDTO dto);
 	
 }

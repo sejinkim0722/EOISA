@@ -15,28 +15,28 @@ public class ReplyServiceImpl implements ReplyService {
 	private ReplyDAO dao;
 
 	@Override
-	public int insertService(ReplyDTO dto) {
-		return dao.insert(dto);
+	public int insertReplyService(ReplyDTO dto) {
+		return dao.insertReply(dto);
 	}
 
 	@Override
-	public List<ReplyDTO> listService(int dealno) {
-		return dao.list(dealno);
+	public List<ReplyDTO> getReplylistService(int dealno) {
+		return dao.getReplylist(dealno);
 	}
 
 	@Override
-	public int deleteService(int replyno) {
-		return dao.delete(replyno);
+	public int deleteReplyService(int replyno) {
+		return dao.deleteReply(replyno);
 	}
 
 	@Override
-	public int modifyService(ReplyDTO dto) {
-		return dao.modify(dto);
+	public int modifyReplyService(ReplyDTO dto) {
+		return dao.modifyReply(dto);
 	}
 
 	@Override
-	public int likeitService(ReplyDTO dto) {
-		return dao.likeit(dto);
+	public int manageReplyLikeitService(ReplyDTO dto) {
+		return dao.manageReplyLikeit(dto);
 	}
 	
 }

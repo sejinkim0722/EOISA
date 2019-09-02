@@ -36,7 +36,7 @@ public class MainController {
 	@Scheduled(fixedDelay = 600000)
 	public void crawling_algumon() {
 		MainDTO dto = new MainDTO();
-		service.crawling_algumonService(dto);
+		service.crawlingService(dto);
 	}
 
 	// Main Page
@@ -47,11 +47,11 @@ public class MainController {
 
 	@RequestMapping(value = "/{pageNum}")
 	public ModelAndView main(@PathVariable int pageNum) {
-		int totalPage = service.paginationService(null, pageNum);
-		List<MainDTO> deal = service.dealService(pageNum);
-		List<Map<String, Integer>> ranking = service.rankingService();
+		int totalPage = service.pagingService(null, pageNum);
+		List<MainDTO> deal = service.getDealPageService(pageNum);
+		List<Map<String, Integer>> ranking = service.getRankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
+		List<MainDTO> wishlist = service.getWishlistService(authentication.getName());
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");
@@ -66,19 +66,17 @@ public class MainController {
 	// Deal Site Redirect & Increase Viewcount
 	@RequestMapping(value = "/deal/{dealno}")
 	public RedirectView deal(@PathVariable int dealno) {
-		String link = service.linkService(dealno);
-
-		return new RedirectView(link);
+		return new RedirectView(service.viewcountIncreaseService(dealno));
 	}
 
 	// Filtering Page
 	@RequestMapping(value = "/filter/{pageNum}")
 	public ModelAndView filter(@PathVariable int pageNum, @RequestParam MultiValueMap<String, List<String>> filters) {
-		int totalPage = service.filterPaginationService(pageNum, filters);
-		List<MainDTO> filter = service.filterService(pageNum, filters);
-		List<Map<String, Integer>> ranking = service.rankingService();
+		int totalPage = service.filterPagingService(pageNum, filters);
+		List<MainDTO> filter = service.getFilteredPageService(pageNum, filters);
+		List<Map<String, Integer>> ranking = service.getRankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
+		List<MainDTO> wishlist = service.getWishlistService(authentication.getName());
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("append");
@@ -93,10 +91,10 @@ public class MainController {
 	// Rank Page
 	@RequestMapping(value = "/rank")
 	public ModelAndView rankpage() {
-		List<MainDTO> rankpage = service.rankpageService();
-		List<Map<String, Integer>> ranking = service.rankingService();
+		List<MainDTO> rankpage = service.getRankPageService();
+		List<Map<String, Integer>> ranking = service.getRankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
+		List<MainDTO> wishlist = service.getWishlistService(authentication.getName());
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");
@@ -115,11 +113,11 @@ public class MainController {
 
 	@RequestMapping(value = "/search/{keyword}/{pageNum}")
 	public ModelAndView search(@PathVariable("keyword") String keyword, @PathVariable("pageNum") int pageNum) {
-		int totalPage = service.searchPaginationService(keyword, pageNum);
-		List<MainDTO> search = service.searchService(keyword, pageNum);
-		List<Map<String, Integer>> ranking = service.rankingService();
+		int totalPage = service.searchPagingService(keyword, pageNum);
+		List<MainDTO> search = service.getSearchResultService(keyword, pageNum);
+		List<Map<String, Integer>> ranking = service.getRankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
+		List<MainDTO> wishlist = service.getWishlistService(authentication.getName());
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");
@@ -140,11 +138,11 @@ public class MainController {
 
 	@RequestMapping(value = "/theme/{title}/{pageNum}")
 	public ModelAndView theme(@PathVariable("title") String title, @PathVariable("pageNum") int pageNum) {
-		int totalPage = service.paginationService(title, pageNum);
-		List<MainDTO> theme = service.themeService(title, pageNum);
-		List<Map<String, Integer>> ranking = service.rankingService();
+		int totalPage = service.pagingService(title, pageNum);
+		List<MainDTO> theme = service.getThemePageService(title, pageNum);
+		List<Map<String, Integer>> ranking = service.getRankingService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		List<MainDTO> wishlist = service.wishlistService(authentication.getName());
+		List<MainDTO> wishlist = service.getWishlistService(authentication.getName());
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");

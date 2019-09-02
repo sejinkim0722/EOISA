@@ -5,44 +5,45 @@
 
 <mapper namespace="ksj.bitcamp.eoisa.dto.ReplyDTO">
 	
-	<select id="list" resultType="ReplyDTO" parameterType="int">
+	<select id="replyList" resultType="ReplyDTO" parameterType="int">
 		select * from REPLY_DEALINFO where DEALNO = #{dealno} order by (case when REF = 0 then REPLYNO else REF end), REPLYNO
 	</select>
 	
-	<insert id="insert" parameterType="ReplyDTO">
+	<select id="reply" resultType="ReplyDTO" parameterType="int">
+		select * from REPLY_DEALINFO where REPLYNO = #{replyno}
+	</select>
+
+	<insert id="replyInsert" parameterType="ReplyDTO">
 		insert into REPLY_DEALINFO
 		values(REPLY_DEALINFO_SEQ.nextval, ${dealno}, #{username}, #{nickname}, #{profile_pic}, SYSDATE, #{content}, 0, ${depth}, ${ref})
 	</insert>
 	
-	<select id="get" resultType="ReplyDTO" parameterType="int">
-		select * from REPLY_DEALINFO where REPLYNO = #{replyno}
-	</select>
-	
-	<delete id="delete" parameterType="int">
+	<delete id="replyDelete" parameterType="int">
 		delete REPLY_DEALINFO where REPLYNO = #{replyno}
 	</delete>
 	
-	<update id="modify" parameterType="ReplyDTO">
+	<update id="replyModify" parameterType="ReplyDTO">
 		update REPLY_DEALINFO set CONTENT = #{content} where REPLYNO = #{replyno}
 	</update>
 	
-	<update id="count_up" parameterType="int">
+	<update id="replyCountUp" parameterType="int">
 		update DEALINFO set REPLYCOUNT = REPLYCOUNT + 1 where DEALNO = #{dealno}
 	</update>
 	
-	<update id="count_down" parameterType="int">
+	<update id="replyCountDown" parameterType="int">
 		update DEALINFO set REPLYCOUNT = REPLYCOUNT - 1 where DEALNO = (select DEALNO from REPLY_DEALINFO where REPLYNO = #{replyno})
 	</update>
 	
-	<select id="likeit_check" resultType="int" parameterType="ReplyDTO">
-		select COUNT(LIKEIT) from LIKEIT_REPLY_DEALINFO where REPLYNO = #{replyno} and USERNAME = #{username}
-	</select>
 	
-	<insert id="likeit" parameterType="ReplyDTO">
+	<insert id="likeitInsert" parameterType="ReplyDTO">
 		insert into LIKEIT_REPLY_DEALINFO values(LIKEIT_REPLY_DEALINFO_SEQ.nextval, #{username}, ${replyno}, 1)
 	</insert>
 	
-	<update id="likeit_count_up" parameterType="ReplyDTO">
+	<select id="likeitCount" resultType="int" parameterType="ReplyDTO">
+		select COUNT(LIKEIT) from LIKEIT_REPLY_DEALINFO where REPLYNO = #{replyno} and USERNAME = #{username}
+	</select>
+	
+	<update id="likeitCountUp" parameterType="ReplyDTO">
 		update REPLY_DEALINFO set LIKEITCOUNT = LIKEITCOUNT + 1 where REPLYNO = #{replyno}
 	</update>
 	

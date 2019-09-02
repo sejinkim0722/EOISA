@@ -5,23 +5,23 @@
   
 <mapper namespace="ksj.bitcamp.eoisa.dto.BoardDTO">
 
-	<select id="getFreeList" resultType="BoardDTO">
+	<select id="free" resultType="BoardDTO">
 		select * from FREEBOARD
 	</select>
 	
-	<select id="getFreeCount" resultType="int">
+	<select id="freeCount" resultType="int">
 		select count(*) from FREEBOARD
 	</select>
 	
-	<select id="getReviewList" resultType="BoardDTO">
+	<select id="review" resultType="BoardDTO">
 		select * from REVIEWBOARD
 	</select>
 	
-	<select id="getReviewCount" resultType="int">
+	<select id="reviewCount" resultType="int">
 		select count(*) from REVIEWBOARD
 	</select>
 	
-	<select id="search" resultType="BoardDTO" parameterType="String">
+	<select id="searchResult" resultType="BoardDTO" parameterType="String">
 		select * from
 		(select * from
 			(select 
@@ -77,21 +77,21 @@
 		order by WRITEDATE desc
 	</select>
 	
-	<delete id="delete_free" parameterType="list">
+	<delete id="freeDelete" parameterType="list">
 		delete from FREEBOARD where ARTICLENO in
 		<foreach item="dto" index="index" collection="list" open="("  close=")">
 			#{dto.articleno}
 		</foreach>
 	</delete>
 	
-	<delete id="delete_review" parameterType="list">
+	<delete id="reviewDelete" parameterType="list">
 		delete from REVIEWBOARD where ARTICLENO in
 		<foreach item="dto" index="index" collection="list" open="("  close=")">
 			#{dto.articleno}
 		</foreach>
 	</delete>
 	
-	<delete id="delSearch" parameterType="list">
+	<delete id="boardDelete" parameterType="list">
 		<foreach item="dto" collection="list" separator=";" open="DECLARE BEGIN" close="; END;">
 			<choose>
 				<when test="dto.tb_title eq 'NOTICEBOARD'">
@@ -104,7 +104,7 @@
 					delete from REVIEWBOARD
 				</when>
 			</choose>
-				where ARTICLENO = #{dto.articleno}
+			where ARTICLENO = #{dto.articleno}
 		</foreach>
 	</delete>
 	

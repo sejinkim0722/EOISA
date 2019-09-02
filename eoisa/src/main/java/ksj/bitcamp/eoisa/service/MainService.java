@@ -9,18 +9,18 @@ import ksj.bitcamp.eoisa.dto.MainDTO;
 
 public interface MainService {
 	
-	void crawling_algumonService(MainDTO dto);
-	int paginationService(String title, int pageNum);
-	int searchPaginationService(String keyword, int pageNum);
-	int filterPaginationService(int pageNum, MultiValueMap<String, List<String>> filters);
-	List<MainDTO> dealService(int pageNum);
-	List<MainDTO> filterService(int pageNum, MultiValueMap<String, List<String>> filters);
-	List<MainDTO> rankpageService();
-	List<Map<String, Integer>> rankingService();
-	List<MainDTO> searchService(String keyword, int pageNum);
-	List<MainDTO> themeService(String title, int pageNum);
+	void crawlingService(MainDTO dto);
+	int pagingService(String title, int pageNum);
+	int searchPagingService(String keyword, int pageNum);
+	int filterPagingService(int pageNum, MultiValueMap<String, List<String>> filters);
+	List<MainDTO> getDealPageService(int pageNum);
+	List<MainDTO> getFilteredPageService(int pageNum, MultiValueMap<String, List<String>> filters);
+	List<MainDTO> getRankPageService();
+	List<Map<String, Integer>> getRankingService();
+	List<MainDTO> getSearchResultService(String keyword, int pageNum);
+	List<MainDTO> getThemePageService(String title, int pageNum);
 	int manageWishlistService(MainDTO dto);
-	List<MainDTO> wishlistService(String username);
-	String linkService(int dealno);
+	List<MainDTO> getWishlistService(String username);
+	String viewcountIncreaseService(int dealno);
 	
 }

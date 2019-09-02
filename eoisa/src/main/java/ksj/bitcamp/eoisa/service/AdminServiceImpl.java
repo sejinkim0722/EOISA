@@ -17,9 +17,8 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminDAO dao;
 
-	public List<SignDTO> getMemberAll(String column) {
-
-		return dao.getMemberList(column);
+	public List<SignDTO> getUserAll(String column) {
+		return dao.getUserList(column);
 	}
 
 	public List<NoticeBoardDTO> getNoticeAll() {
@@ -39,8 +38,8 @@ public class AdminServiceImpl implements AdminService {
 		return dao.getDealList();
 	}
 
-	public int getMemberCount() {
-		return dao.getMemberCount();
+	public int getUserCount() {
+		return dao.getUserCount();
 	}
 
 	public int getNoticeCount() {
@@ -60,12 +59,11 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	public int updateMember(List<SignDTO> list) {
-
-		return dao.updateMember(list);
+		return dao.updateUser(list);
 	}
 
 	public int deleteBoard(List<BoardDTO> list, String type) {
-		if (type.equals("review")) {
+		if(type.equals("review")) {
 			return dao.delReview(list);
 		} else {
 			return dao.delFree(list);

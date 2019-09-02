@@ -5,15 +5,15 @@
   
 <mapper namespace="ksj.bitcamp.eoisa.dto.NoticeBoardDTO">
 
-	<select id="list_all" resultType="NoticeBoardDTO">
+	<select id="notice" resultType="NoticeBoardDTO">
 		select * from NOTICEBOARD
 	</select>
 	
-	<select id="count_all" resultType="int">
+	<select id="noticeCount" resultType="int">
 		select count(*) from NOTICEBOARD
 	</select>
 	
-	<delete id="delete_notice" parameterType="list">
+	<delete id="noticeDelete" parameterType="list">
 		delete from NOTICEBOARD where ARTICLENO in
 		<foreach item="dto" index="index" collection="list" open="("  close=")">
 			#{dto.articleno}

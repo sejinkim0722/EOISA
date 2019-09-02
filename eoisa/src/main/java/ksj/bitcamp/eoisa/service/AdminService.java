@@ -9,12 +9,12 @@ import ksj.bitcamp.eoisa.dto.SignDTO;
 
 public interface AdminService {
 	
-	List<SignDTO> getMemberAll(String column);
+	List<SignDTO> getUserAll(String column);
 	List<NoticeBoardDTO> getNoticeAll();
 	List<BoardDTO> getFreeAll();
 	List<BoardDTO> getReviewAll();
 	List<MainDTO> getDealAll();
-	int getMemberCount();
+	int getUserCount();
 	int getNoticeCount();
 	int getFreeCount();
 	int getReviewCount();

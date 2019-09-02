@@ -17,53 +17,53 @@ public class MainServiceImpl implements MainService {
 	private MainDAO dao;
 
 	@Override
-	public void crawling_algumonService(MainDTO dto) {
-		dao.crawling_algumon(dto);
+	public void crawlingService(MainDTO dto) {
+		dao.crawling(dto);
 	}
 
 	@Override
-	public int paginationService(String title, int pageNum) {
-		return dao.pagination(title, pageNum);
+	public int pagingService(String title, int pageNum) {
+		return dao.paging(title, pageNum);
 	}
 
 	@Override
-	public int searchPaginationService(String keyword, int pageNum) {
-		return dao.searchPagination(keyword, pageNum);
+	public int searchPagingService(String keyword, int pageNum) {
+		return dao.searchPaging(keyword, pageNum);
 	}
 
 	@Override
-	public int filterPaginationService(int pageNum, MultiValueMap<String, List<String>> filters) {
-		return dao.filterPagination(pageNum, filters);
+	public int filterPagingService(int pageNum, MultiValueMap<String, List<String>> filters) {
+		return dao.filterPaging(pageNum, filters);
 	}
 
 	@Override
-	public List<MainDTO> dealService(int pageNum) {
-		return dao.deal(pageNum);
+	public List<MainDTO> getDealPageService(int pageNum) {
+		return dao.getDealPage(pageNum);
 	}
 
 	@Override
-	public List<MainDTO> filterService(int pageNum, MultiValueMap<String, List<String>> filters) {
-		return dao.filter(pageNum, filters);
+	public List<MainDTO> getFilteredPageService(int pageNum, MultiValueMap<String, List<String>> filters) {
+		return dao.getFilteredPage(pageNum, filters);
 	}
 
 	@Override
-	public List<MainDTO> rankpageService() {
-		return dao.rankpage();
+	public List<MainDTO> getRankPageService() {
+		return dao.getRankPage();
 	}
 
 	@Override
-	public List<Map<String, Integer>> rankingService() {
-		return dao.ranking();
+	public List<Map<String, Integer>> getRankingService() {
+		return dao.getRanking();
 	}
 
 	@Override
-	public List<MainDTO> searchService(String keyword, int pageNum) {
-		return dao.search(keyword, pageNum);
+	public List<MainDTO> getSearchResultService(String keyword, int pageNum) {
+		return dao.getSearchResult(keyword, pageNum);
 	}
 
 	@Override
-	public List<MainDTO> themeService(String title, int pageNum) {
-		return dao.theme(title, pageNum);
+	public List<MainDTO> getThemePageService(String title, int pageNum) {
+		return dao.getThemePage(title, pageNum);
 	}
 
 	@Override
@@ -72,13 +72,13 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public List<MainDTO> wishlistService(String username) {
-		return dao.wishlist(username);
+	public List<MainDTO> getWishlistService(String username) {
+		return dao.getWishlist(username);
 	}
 
 	@Override
-	public String linkService(int dealno) {
-		return dao.link(dealno);
+	public String viewcountIncreaseService(int dealno) {
+		return dao.viewcountIncrease(dealno);
 	}
 	
 }

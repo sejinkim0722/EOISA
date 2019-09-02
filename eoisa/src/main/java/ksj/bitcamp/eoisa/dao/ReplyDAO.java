@@ -6,10 +6,10 @@ import ksj.bitcamp.eoisa.dto.ReplyDTO;
 
 public interface ReplyDAO {
 	
-	int insert(ReplyDTO dto);
-	List<ReplyDTO> list(int dealno);
-	int delete(int replyno);
-	int modify(ReplyDTO dto);
-	int likeit(ReplyDTO dto);
+	int insertReply(ReplyDTO dto);
+	List<ReplyDTO> getReplylist(int dealno);
+	int deleteReply(int replyno);
+	int modifyReply(ReplyDTO dto);
+	int manageReplyLikeit(ReplyDTO dto);
 	
 }

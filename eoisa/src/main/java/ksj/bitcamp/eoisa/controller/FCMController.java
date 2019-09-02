@@ -18,7 +18,7 @@ public class FCMController {
 
 	@Scheduled(fixedDelay = 300000)
 	public void push() {
-		service.pushService();
+		service.pushMessagingService();
 	}
 
 	@PostMapping(value = "/fcm/token", produces = "application/text;charset=UTF-8")

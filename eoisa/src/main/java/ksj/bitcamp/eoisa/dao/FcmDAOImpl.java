@@ -32,15 +32,15 @@ public class FcmDAOImpl implements FcmDAO {
 
 	@Autowired
 	private SqlSession sqlSession;
-	private String ns_main = "ksj.bitcamp.eoisa.dto.MainDTO";
+	
+	private static final String NS_MAIN = "ksj.bitcamp.eoisa.dto.MainDTO";
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public void push() {
+	public void pushMessaging() {
 		try {
-			int current = sqlSession.selectOne(ns_main + ".count_all");
+			int current = sqlSession.selectOne(NS_MAIN + ".dealCount");
 			TimeUnit.MILLISECONDS.sleep(60000);
-			int after = sqlSession.selectOne(ns_main + ".count_all");
+			int after = sqlSession.selectOne(NS_MAIN + ".dealCount");
 
 			if (after > current) {
 				HttpHeaders headers = new HttpHeaders();
@@ -84,10 +84,9 @@ public class FcmDAOImpl implements FcmDAO {
 	}
 
 	private String getAccessToken() throws IOException {
-		GoogleCredential googleCredential = 
-				GoogleCredential.fromStream(new FileInputStream("/var/eoisa/project-eoisa.json")).createScoped(Arrays.asList(SCOPES));
-		
+		GoogleCredential googleCredential = GoogleCredential.fromStream(new FileInputStream("/var/eoisa/project-eoisa.json")).createScoped(Arrays.asList(SCOPES));
 		googleCredential.refreshToken();
+		
 		return googleCredential.getAccessToken();
 	}
 

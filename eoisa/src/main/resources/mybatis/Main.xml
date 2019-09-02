@@ -4,8 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ksj.bitcamp.eoisa.dto.MainDTO">
-
-	<update id="crawling" parameterType="MainDTO">
+	
+	<select id="maxPage" resultType="int">
+		select TRUNC(COUNT(*) / 10) from DEALINFO
+	</select>
+	
+	
+	<select id="deal" resultType="MainDTO">
+		select * from DEALINFO
+	</select>
+	
+	<update id="dealUpsert" parameterType="MainDTO">
 		merge into DEALINFO D using (select #{url_src} URL_SRC from DUAL) U
 		on (D.URL_SRC = U.URL_SRC)
 		when matched then
@@ -18,19 +27,11 @@
 		)
 	</update>
 	
-	<select id="calc_maxpage" resultType="int">
-		select TRUNC(COUNT(*) / 10) from DEALINFO
-	</select>
-	
-	<select id="list_all" resultType="MainDTO">
-		select * from DEALINFO
-	</select>
-	
-	<select id="count_all" resultType="int">
+	<select id="dealCount" resultType="int">
 		select COUNT(DEALNO) from DEALINFO
 	</select>
 	
-	<select id="dealpage" resultType="MainDTO" parameterType="Map">
+	<select id="dealPage" resultType="MainDTO" parameterType="Map">
 		select DEALNO, SITE_SRC, URL_SRC, SITE_BUY, CATEGORY, REGION, GOODS_TITLE, GOODS_PIC, PRICE, PRICE_NAVER, MERIT, DELIEVER_FEE, WRITETIME, ISENDED, REPLYCOUNT, REPLYCOUNT_SRC, LIKEIT_SRC, DISLIKEIT_SRC, VIEWCOUNT
 		from (select ROWNUM RNUM, aa.* from (select * from DEALINFO
 		<choose>
@@ -71,7 +72,7 @@
 		</choose>
 	</select>
 	
-	<select id="dealcount" resultType="int" parameterType="Map">
+	<select id="dealCount" resultType="int" parameterType="Map">
 		select COUNT(*) COUNT from DEALINFO
 		<choose>
 			<when test="title != null and title.equals('issue')">where REPLYCOUNT_SRC >= 10</when>
@@ -95,7 +96,15 @@
 		</if>
 	</select>
 	
-	<select id="rankpage" resultType="MainDTO">
+	<delete id="dealDelete" parameterType="list">
+		delete from DEALINFO where DEALNO in
+		<foreach item="dto" index="index" collection="list" open="("  close=")">
+			#{dto.dealno}
+		</foreach>
+	</delete>
+	
+	
+	<select id="rankPage" resultType="MainDTO">
 		<![CDATA[
 			select * 
 			from (
@@ -111,37 +120,38 @@
 	</select>
 	
 	
-	<select id="wishlist_check" resultType="int" parameterType="MainDTO">
-		select COUNT(DEALNO) from WISHLIST where USERNAME = #{username} and DEALNO = #{dealno}
-	</select>
-	
-	<select id="wishlist_max" resultType="int" parameterType="MainDTO">
-		select COUNT(USERNAME) from WISHLIST where USERNAME = #{username}
-	</select>
-	
-	<insert id="wishlist_insert" parameterType="MainDTO">
-		insert into WISHLIST values(WISHLIST_SEQ.nextval, #{username}, #{dealno})
-	</insert>
-	
-	<delete id="wishlist_delete" parameterType="MainDTO">
-		delete WISHLIST where USERNAME = #{username} and DEALNO = #{dealno}
-	</delete>
-	
 	<select id="wishlist" resultType="MainDTO" parameterType="String">
 		select DEALNO, GOODS_TITLE, WRITETIME from DEALINFO where DEALNO in ((select DEALNO from WISHLIST where USERNAME = #{username}))
 	</select>
 	
+	<select id="wishlistCount" resultType="int" parameterType="MainDTO">
+		select COUNT(DEALNO) from WISHLIST where USERNAME = #{username} and DEALNO = #{dealno}
+	</select>
 	
-	<select id="url_src" resultType="String" parameterType="int">
+	<select id="wishlistMax" resultType="int" parameterType="MainDTO">
+		select COUNT(USERNAME) from WISHLIST where USERNAME = #{username}
+	</select>
+	
+	<insert id="wishlistInsert" parameterType="MainDTO">
+		insert into WISHLIST values(WISHLIST_SEQ.nextval, #{username}, #{dealno})
+	</insert>
+	
+	<delete id="wishlistDelete" parameterType="MainDTO">
+		delete WISHLIST where USERNAME = #{username} and DEALNO = #{dealno}
+	</delete>
+	
+
+	<select id="srcURL" resultType="String" parameterType="int">
 		select URL_SRC from DEALINFO where DEALNO = #{dealno}
 	</select>
 	
-	<update id="viewcount_up" parameterType="int">
+	
+	<update id="viewcountUp" parameterType="int">
 		update DEALINFO set VIEWCOUNT = VIEWCOUNT + 1 where DEALNO = #{dealno}
 	</update>
 	
 	
-	<select id="search" resultType="MainDTO" parameterType="String">
+	<select id="searchResult" resultType="MainDTO" parameterType="String">
 		select * from DEALINFO
 		where dealno like #{sVal}
 		or site_src like #{sVal}
@@ -163,12 +173,5 @@
 		or dislikeit_src like #{sVal}
 		or viewcount like #{sVal}  
 	</select>
-	
-	<delete id="delete_deal" parameterType="list">
-		delete from DEALINFO where DEALNO in
-		<foreach item="dto" index="index" collection="list" open="("  close=")">
-			#{dto.dealno}
-		</foreach>
-	</delete>
-	
+
 </mapper>

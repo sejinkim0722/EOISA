@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.jsoup.Jsoup;
-import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -32,91 +31,81 @@ public class MainDAOImpl implements MainDAO {
 	
 	@Autowired
 	private SqlSession sqlSession;
-	private String ns_main = "ksj.bitcamp.eoisa.dto.MainDTO";
+	
+	private static final String NS_MAIN = "ksj.bitcamp.eoisa.dto.MainDTO";
+	private static final String TARGET_URL = "https://algumon.com";
 
 	@Override
-	public void crawling_algumon(MainDTO dto) {
-		String url_algumon = "https://algumon.com/more/";
-		Elements isended = null, goods_pic = null, site_buy = null, site_src = null, goods_title = null, price = null, deliever_fee = null, writetime = null, dealinfos = null;
-		int max = sqlSession.selectOne("calc_maxpage");
+	public void crawling(MainDTO dto) {
+		int max = sqlSession.selectOne(NS_MAIN + "maxPage");
 
-		for (int p = 0; p < max + 1; p++) {
-			long timelaps_start = System.currentTimeMillis();
+		for (int page = 0; page < max + 1; page++) {
 			try {
-				Document doc = Jsoup.connect(url_algumon + p + "?types=ended").maxBodySize(0).get();
+				long timelapsStart = System.currentTimeMillis();
 
-				Elements pbody = doc.select("li.left.clearfix.post-li");
-				for (Element el : pbody) {
-					isended = el.select("span.label.end");
-					goods_title = el.select("p > span.item-name > a");
-					Response res = Jsoup.connect("https://algumon.com" + goods_title.attr("href")).followRedirects(true).execute();
-					goods_pic = el.select("div.product-img-box > a > img");
-					price = el.select("p > small.product-price");
-					deliever_fee = el.select("p > small.product-shipping-fee");
-					writetime = el.select("small.label-time");
-					site_src = el.select("span.label.site");
-					site_buy = el.select("span.label.shop > a");
+				Document doc = Jsoup.connect(TARGET_URL + "/more/" + page + "?types=ended").maxBodySize(0).get();
+				Elements body = doc.select("li.left.clearfix.post-li");
+				for (Element el : body) {
+					dto.setIsended(el.select("span.label.end").text());
+					dto.setGoods_title(el.select("p > span.item-name > a").text());
+					dto.setGoods_pic(el.select("div.product-img-box > a > img").attr("src"));
+					dto.setUrl_src(Jsoup.connect(TARGET_URL + el.select("p > span.item-name > a").attr("href"))
+										.followRedirects(true)
+										.execute()
+										.url()
+										.toString());
+					dto.setWritetime(el.select("small.label-time").first().text());
+					dto.setSite_buy(el.select("span.label.shop > a").text());
+					dto.setSite_src(el.select("span.label.site").first().text());
+					dto.setRegion(el.select("p > small.product-price").text().matches("([$]|[£]|[¥]|[€]).*") ? "국내" : "해외");
+					dto.setCategory("unknown");
 
-					String region = "국내";
-					if (price.text().matches("([$]|[£]|[¥]|[€]).*")) region = "해외";
-
-					dealinfos = el.select("span.deal-info");
-					String[] temp = dealinfos.text().split(" ");
+					Elements dealinfo = el.select("span.deal-info");
+					String[] temp = dealinfo.text().split(" ");
 					String[] split = { "0", "0", "0" };
 					for (int i = 0; i < temp.length; i++) split[i] = temp[i];
-					if (temp[0].trim().equals("")) split[0] = "0";
-
-					String price_deal = price.text();
-					String price_naver = getNaverlprice(goods_title.text());
-					if (price_deal.contains("원") && !price_naver.equals("정보 없음") && region.equals("국내")) {
-						int temp_price = Integer.parseInt(price_deal.trim().replaceAll("[^0-9]", ""));
-						int temp_price_naver = Integer.parseInt(price_naver.trim().replaceAll("[^0-9]", ""));
-						String merit = String.format("%,d", (temp_price_naver - temp_price));
-						dto.setMerit(merit);
-					} else {
-						dto.setMerit("");
-					}
-
-					dto.setSite_src(site_src.first().text());
-					dto.setUrl_src(res.url().toString());
-					dto.setSite_buy(site_buy.text());
-					dto.setCategory("unknown");
-					dto.setRegion(region);
-					dto.setGoods_title(goods_title.text());
-					dto.setGoods_pic(goods_pic.attr("src"));
-					dto.setPrice(price_deal);
-					dto.setPrice_naver(price_naver);
-					dto.setDeliever_fee(deliever_fee.text());
-					dto.setWritetime(writetime.first().text());
-					dto.setIsended(isended.text());
+					if(temp[0].trim().equals("")) split[0] = "0";
 					dto.setReplycount_src(Integer.parseInt(split[0]));
 					dto.setLikeit_src(Integer.parseInt(split[1]));
 					dto.setDislikeit_src(Integer.parseInt(split[2]));
 
-					sqlSession.update(ns_main + ".crawling", dto); // DEALINFO Upsert
+					String dealPrice = el.select("p > small.product-price").text();
+					String naverPrice = getNaverPrice(el.select("p > span.item-name > a").text());
+					if(dealPrice.contains("원") && !naverPrice.equals("정보 없음")) {
+						int tempDealPrice = Integer.parseInt(dealPrice.trim().replaceAll("[^0-9]", ""));
+						int tempNaverPrice = Integer.parseInt(naverPrice.trim().replaceAll("[^0-9]", ""));
+						dto.setMerit(String.format("%,d", (tempNaverPrice - tempDealPrice)));
+					} else {
+						dto.setMerit("");
+					}
+					dto.setPrice(dealPrice);
+					dto.setPrice_naver(naverPrice);
+					dto.setDeliever_fee(el.select("p > small.product-shipping-fee").text());
+					
+					sqlSession.update(NS_MAIN + ".crawling", dto); // DEALINFO Upsert
 				}
-				long timelaps_end = System.currentTimeMillis();
-				System.out.println("Page " + p + " Crawling Complete (" + ((timelaps_end - timelaps_start) / 1000) + " sec)");
+				long timelapsEnd = System.currentTimeMillis();
+				
+				System.out.println("Crawling Complete : Page " + page + "(" + (timelapsEnd - timelapsStart) + " ms)");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private static final String clientId = "";
-	private static final String clientSecret = "";
+	private static final String CLIENT_ID = "";
+	private static final String CLIENT_SECRET = "";
 
-	private String getNaverlprice(String param) {
-		int result;
+	private String getNaverPrice(String goodsTitle) {
 		try {
-			String query = URLEncoder.encode(param.replaceAll("[\\p{S}\\p{P}]+", "")
+			String query = URLEncoder.encode(goodsTitle.replaceAll("[\\p{S}\\p{P}]+", "")
 					.replaceAll("(끌올|할인|청구시|청구|가성비|품절|배송비|배송|합배용|합배|관세|관부가세|적용|적용시|쿠폰|포인트|무료|특가|추가|강추|최대|최소|NH|신한|KB|국민|스마일클럽|유니온페이)", ""), "UTF-8");
 			URL url = new URL("https://openapi.naver.com/v1/search/shop.json?query=" + query);
 			
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
-			con.setRequestProperty("X-Naver-Client-Id", clientId);
-			con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+			con.setRequestProperty("X-Naver-Client-Id", CLIENT_ID);
+			con.setRequestProperty("X-Naver-Client-Secret", CLIENT_SECRET);
 			
 			int responseCode = con.getResponseCode();
 			BufferedReader br;
@@ -130,7 +119,7 @@ public class MainDAOImpl implements MainDAO {
 			JsonObject jobject = jelement.getAsJsonObject();
 			JsonArray jarray = jobject.getAsJsonArray("items");
 			jobject = jarray.get(0).getAsJsonObject();
-			result = jobject.get("lprice").getAsInt();
+			int result = jobject.get("lprice").getAsInt();
 
 			br.close();
 			con.disconnect();
@@ -142,56 +131,54 @@ public class MainDAOImpl implements MainDAO {
 	}
 
 	@Override
-	public int pagination(String title, int pageNum) {
+	public int paging(String title, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("title", title);
-		int count = sqlSession.selectOne(ns_main + ".dealcount", params);
+		int count = sqlSession.selectOne(NS_MAIN + ".dealCount", params);
 
 		return getTotalPage(count, pageNum);
 	}
 
 	@Override
-	public int searchPagination(String keyword, int pageNum) {
+	public int searchPaging(String keyword, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("keyword", "%" + keyword + "%");
-		int count = sqlSession.selectOne(ns_main + ".dealcount", params);
+		int count = sqlSession.selectOne(NS_MAIN + ".dealCount", params);
 
 		return getTotalPage(count, pageNum);
 	}
 
 	@Override
-	public int filterPagination(int pageNum, MultiValueMap<String, List<String>> filters) {
+	public int filterPaging(int pageNum, MultiValueMap<String, List<String>> filters) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("region", filters.get("region"));
 		params.put("site", filters.get("site"));
 		params.put("shop", filters.get("shop"));
 		params.put("isended", filters.get("isended"));
-		int count = sqlSession.selectOne(ns_main + ".dealcount", params);
+		int count = sqlSession.selectOne(NS_MAIN + ".dealCount", params);
 
 		return getTotalPage(count, pageNum);
 	}
 
 	private int getTotalPage(int count, int pageNum) {
 		int totalPage = count / 10;
-		if (count % 10 > 0)
-			totalPage++;
-		if (totalPage < pageNum)
-			pageNum = totalPage;
+		if (count % 10 > 0) totalPage++;
+		if (totalPage < pageNum) pageNum = totalPage;
 
 		return totalPage;
 	}
 
 	@Override
-	public List<MainDTO> deal(int pageNum) {
+	public List<MainDTO> getDealPage(int pageNum) {
 		HashMap<String, Integer> params = new HashMap<String, Integer>();
 		params.put("startRownum", (pageNum - 1) * 10);
 		params.put("endRownum", ((pageNum - 1) * 10) + 10);
 
-		return sqlSession.selectList(ns_main + ".dealpage", params);
+		return sqlSession.selectList(NS_MAIN + ".dealPage", params);
 	}
 
 	@Override
-	public List<MainDTO> filter(int pageNum, MultiValueMap<String, List<String>> filters) {
+	public List<MainDTO> getFilteredPage(int pageNum, MultiValueMap<String, List<String>> filters) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		List<String> rownum = Arrays.asList(Integer.toString((pageNum - 1) * 10), Integer.toString(((pageNum - 1) * 10) + 10));
 		params.put("region", filters.get("region"));
@@ -200,65 +187,64 @@ public class MainDAOImpl implements MainDAO {
 		params.put("isended", filters.get("isended"));
 		params.put("rownum", rownum);
 
-		return sqlSession.selectList(ns_main + ".dealpage", params);
+		return sqlSession.selectList(NS_MAIN + ".dealPage", params);
 	}
 
 	@Override
-	public List<MainDTO> rankpage() {
-		return sqlSession.selectList(ns_main + ".rankpage");
+	public List<MainDTO> getRankPage() {
+		return sqlSession.selectList(NS_MAIN + ".rankPage");
 	}
 
 	@Override
-	public List<Map<String, Integer>> ranking() {
-		return sqlSession.selectList(ns_main + ".ranking");
+	public List<Map<String, Integer>> getRanking() {
+		return sqlSession.selectList(NS_MAIN + ".ranking");
 	}
 
 	@Override
-	public List<MainDTO> search(String keyword, int pageNum) {
+	public List<MainDTO> getSearchResult(String keyword, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("keyword", "%" + keyword + "%");
 		params.put("startRownum", Integer.toString((pageNum - 1) * 10));
 		params.put("endRownum", Integer.toString(((pageNum - 1) * 10) + 10));
 
-		return sqlSession.selectList(ns_main + ".dealpage", params);
+		return sqlSession.selectList(NS_MAIN + ".dealPage", params);
 	}
 
 	@Override
-	public List<MainDTO> theme(String title, int pageNum) {
+	public List<MainDTO> getThemePage(String title, int pageNum) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("title", title);
 		params.put("startRownum", Integer.toString((pageNum - 1) * 10));
 		params.put("endRownum", Integer.toString(((pageNum - 1) * 10) + 10));
 
-		return sqlSession.selectList(ns_main + ".dealpage", params);
+		return sqlSession.selectList(NS_MAIN + ".dealPage", params);
 	}
 
 	@Override
 	public int manageWishlist(MainDTO dto) {
-		if ((int) sqlSession.selectOne(ns_main + ".wishlist_check", dto) != 0) {
-			return sqlSession.delete(ns_main + ".wishlist_delete", dto);
-		}
-		if ((int) sqlSession.selectOne(ns_main + ".wishlist_max", dto) == 10) {
+		if((int)sqlSession.selectOne(NS_MAIN + ".wishlistCheck", dto) != 0) return sqlSession.delete(NS_MAIN + ".wishlistDelete", dto);
+		
+		if((int)sqlSession.selectOne(NS_MAIN + ".wishlistMax", dto) == 10) {
 			return 0;
 		} else {
-			return sqlSession.insert(ns_main + ".wishlist_insert", dto);
+			return sqlSession.insert(NS_MAIN + ".wishlistInsert", dto);
 		}
 	}
 
 	@Override
-	public List<MainDTO> wishlist(String username) {
+	public List<MainDTO> getWishlist(String username) {
 		if (!username.equals("anonymousUser")) {
-			return sqlSession.selectList(ns_main + ".wishlist", username);
+			return sqlSession.selectList(NS_MAIN + ".wishlist", username);
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public String link(int dealno) {
-		sqlSession.update(ns_main + ".viewcount_up", dealno);
+	public String viewcountIncrease(int dealno) {
+		sqlSession.update(NS_MAIN + ".viewcountUp", dealno);
 
-		return sqlSession.selectOne(ns_main + ".url_src", dealno);
+		return sqlSession.selectOne(NS_MAIN + ".srcURL", dealno);
 	}
 	
 }

@@ -40,16 +40,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 		gas.add(new SimpleGrantedAuthority(user.getAuthority()));
 		
 		return new CustomUserDetails(
-				user.getUsername(), 
-				user.getPassword(), 
-				enabled, 
-				accountNonExpired, 
-				credentialsNonExpired, 
-				accountNonLocked, 
-				gas, 
-				user.getNickname(), 
-				user.getProfile_pic(), 
-				user.getPlatform());
+			user.getUsername(), 
+			user.getPassword(), 
+			enabled, 
+			accountNonExpired, 
+			credentialsNonExpired, 
+			accountNonLocked, 
+			gas, 
+			user.getNickname(), 
+			user.getProfile_pic(), 
+			user.getPlatform()
+		);
 	}
 	
 }

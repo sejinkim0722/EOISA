@@ -12,8 +12,8 @@ public class FCMServiceImpl implements FCMService {
 	private FcmDAO dao;
 
 	@Override
-	public void pushService() {
-		dao.push();
+	public void pushMessagingService() {
+		dao.pushMessaging();
 	}
 
 	@Override

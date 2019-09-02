@@ -23,8 +23,8 @@ public class KakaoUserInfo {
 
 		try {
 			final HttpResponse response = client.execute(post);
-
 			ObjectMapper mapper = new ObjectMapper();
+			
 			returnNode = mapper.readTree(response.getEntity().getContent());
 		} catch (ClientProtocolException cp) {
 			cp.printStackTrace();

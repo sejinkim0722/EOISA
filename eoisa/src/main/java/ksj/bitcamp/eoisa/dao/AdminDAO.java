@@ -9,17 +9,17 @@ import ksj.bitcamp.eoisa.dto.SignDTO;
 
 public interface AdminDAO {
 	
-	List<SignDTO> getMemberList(String column);
+	List<SignDTO> getUserList(String column);
 	List<NoticeBoardDTO> getNoticeList();
 	List<BoardDTO> getFreeList();
 	List<BoardDTO> getReviewList();
 	List<MainDTO> getDealList();
-	int getMemberCount();
+	int getUserCount();
 	int getNoticeCount();
 	int getFreeCount();
 	int getReviewCount();
 	int getDealCount();
-	int updateMember(List<SignDTO> list);
+	int updateUser(List<SignDTO> list);
 	int delReview(List<BoardDTO> list);
 	int delFree(List<BoardDTO> list);
 	int delNotice(List<NoticeBoardDTO> list);

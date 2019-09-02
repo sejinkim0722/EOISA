@@ -17,92 +17,93 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	@Autowired
 	private SqlSession sqlSession;
-	private String ns_main = "ksj.bitcamp.eoisa.dto.MainDTO";
-	private String ns_board = "ksj.bitcamp.eoisa.dto.BoardDTO";
-	private String ns_notice = "ksj.bitcamp.eoisa.dto.NoticeBoardDTO";
-	private String ns_sign = "ksj.bitcamp.eoisa.dto.SignDTO";
+	
+	private static final String NS_MAIN = "ksj.bitcamp.eoisa.dto.MainDTO";
+	private static final String NS_BOARD = "ksj.bitcamp.eoisa.dto.BoardDTO";
+	private static final String NS_NOTICE = "ksj.bitcamp.eoisa.dto.NoticeBoardDTO";
+	private static final String NS_SIGN = "ksj.bitcamp.eoisa.dto.SignDTO";
 
-	public List<SignDTO> getMemberList(String column) {
+	public List<SignDTO> getUserList(String column) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("column", column);
-		return sqlSession.selectList(ns_sign + ".list_all", params);
+		
+		return sqlSession.selectList(NS_SIGN + ".userList", params);
 	}
 
 	public List<NoticeBoardDTO> getNoticeList() {
-		return sqlSession.selectList(ns_notice + ".list_all");
+		return sqlSession.selectList(NS_NOTICE + ".noticeList");
 	}
 
 	public List<BoardDTO> getFreeList() {
-		return sqlSession.selectList(ns_board + ".getFreeList");
+		return sqlSession.selectList(NS_BOARD + ".freeList");
 	}
 
 	public List<BoardDTO> getReviewList() {
-		return sqlSession.selectList(ns_board + ".getReviewList");
+		return sqlSession.selectList(NS_BOARD + ".reviewList");
 	}
 
 	public List<MainDTO> getDealList() {
-		return sqlSession.selectList(ns_main + ".list_all");
+		return sqlSession.selectList(NS_MAIN + ".dealList");
 	}
 
-	public int getMemberCount() {
-		return sqlSession.selectOne(ns_sign + ".count_all");
+	public int getUserCount() {
+		return sqlSession.selectOne(NS_SIGN + ".userCount");
 	}
 
 	public int getNoticeCount() {
-		return sqlSession.selectOne(ns_notice + ".count_all");
+		return sqlSession.selectOne(NS_NOTICE + ".noticeCount");
 	}
 
 	public int getFreeCount() {
-		return sqlSession.selectOne(ns_board + ".getFreeCount");
+		return sqlSession.selectOne(NS_BOARD + ".freeCount");
 	}
 
 	public int getReviewCount() {
-		return sqlSession.selectOne(ns_board + ".getReviewCount");
+		return sqlSession.selectOne(NS_BOARD + ".reviewCount");
 	}
 
 	public int getDealCount() {
-		return sqlSession.selectOne(ns_main + ".count_all");
+		return sqlSession.selectOne(NS_MAIN + ".dealCount");
 	}
 
-	public int updateMember(List<SignDTO> list) {
-		int i = 0;
-		for (SignDTO dto : list) {
-			i += sqlSession.update(ns_sign + ".modify", dto);
-		}
-		return i;
+	public int updateUser(List<SignDTO> list) {
+		int count = 0;
+		for (SignDTO dto : list) count += sqlSession.update(NS_SIGN + ".userModify", dto);
+
+		return count;
 	}
 
 	public int delReview(List<BoardDTO> list) {
-		return sqlSession.delete(ns_board + ".delete_review", list);
+		return sqlSession.delete(NS_BOARD + ".reviewDelete", list);
 	}
 
 	public int delFree(List<BoardDTO> list) {
-		return sqlSession.delete(ns_board + ".delete_free", list);
+		return sqlSession.delete(NS_BOARD + ".freeDelete", list);
 	}
 
 	public int delNotice(List<NoticeBoardDTO> list) {
-		return sqlSession.delete(ns_notice + ".delete_notice", list);
+		return sqlSession.delete(NS_NOTICE + ".noticeDelete", list);
 	}
 
 	public int deleteDeal(List<MainDTO> list) {
-		return sqlSession.delete(ns_main + ".delete_deal", list);
+		return sqlSession.delete(NS_MAIN + ".dealDelete", list);
 	}
 
 	public int deleteSearch(List<BoardDTO> list) {
-		return sqlSession.delete(ns_board + ".delSearch", list);
+		return sqlSession.delete(NS_BOARD + ".boardDelete", list);
 	}
 
 	// search
 	public List<SignDTO> searchMember(String sVal) {
-		return sqlSession.selectList(ns_sign + ".search", sVal);
+		return sqlSession.selectList(NS_SIGN + ".searchResult", sVal);
 	}
 
 	public List<MainDTO> searchDeal(String sVal) {
-		return sqlSession.selectList(ns_main + ".search", sVal);
+		return sqlSession.selectList(NS_MAIN + ".searchResult", sVal);
 	}
 
 	public List<BoardDTO> searchAllBoard(String sVal) {
-		return sqlSession.selectList(ns_board + ".search", sVal);
+		return sqlSession.selectList(NS_BOARD + ".searchResult", sVal);
 	}
 	
 }

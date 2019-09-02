@@ -13,37 +13,39 @@ public class ReplyDAOImpl implements ReplyDAO {
 	
 	@Autowired
 	private SqlSession sqlSession;
-	private String ns_reply = "ksj.bitcamp.eoisa.dto.ReplyDTO";
+	
+	private static final String NS_REPLY = "ksj.bitcamp.eoisa.dto.ReplyDTO";
 
 	@Override
-	public int insert(ReplyDTO dto) {
-		sqlSession.update(ns_reply + ".count_up", dto.getDealno());
-		return sqlSession.insert(ns_reply + ".insert", dto);
+	public int insertReply(ReplyDTO dto) {
+		sqlSession.update(NS_REPLY + ".replyCountUp", dto.getDealno());
+		return sqlSession.insert(NS_REPLY + ".replyInsert", dto);
 	}
 
 	@Override
-	public List<ReplyDTO> list(int dealno) {
-		return sqlSession.selectList(ns_reply + ".list", dealno);
+	public List<ReplyDTO> getReplylist(int dealno) {
+		return sqlSession.selectList(NS_REPLY + ".replyList", dealno);
 	}
 
 	@Override
-	public int delete(int replyno) {
-		sqlSession.update(ns_reply + ".count_down", replyno);
-		return sqlSession.delete(ns_reply + ".delete", replyno);
+	public int deleteReply(int replyno) {
+		sqlSession.update(NS_REPLY + ".replyCountDown", replyno);
+		return sqlSession.delete(NS_REPLY + ".replyDelete", replyno);
 	}
 
 	@Override
-	public int modify(ReplyDTO dto) {
-		return sqlSession.update(ns_reply + ".modify", dto);
+	public int modifyReply(ReplyDTO dto) {
+		return sqlSession.update(NS_REPLY + ".replyModify", dto);
 	}
 
 	@Override
-	public int likeit(ReplyDTO dto) {
-		if ((int) sqlSession.selectOne(ns_reply + ".likeit_check", dto) == 1) {
+	public int manageReplyLikeit(ReplyDTO dto) {
+		if ((int) sqlSession.selectOne(NS_REPLY + ".likeitCount", dto) == 1) {
 			return 0;
 		} else {
-			sqlSession.insert(ns_reply + ".likeit", dto);
-			sqlSession.update(ns_reply + ".likeit_count_up", dto);
+			sqlSession.insert(NS_REPLY + ".likeitInsert", dto);
+			sqlSession.update(NS_REPLY + ".likeitCountUp", dto);
+			
 			return 1;
 		}
 	}

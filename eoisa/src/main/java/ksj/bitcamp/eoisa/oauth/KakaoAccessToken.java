@@ -29,14 +29,11 @@ public class KakaoAccessToken {
 
 		final HttpClient client = HttpClientBuilder.create().build();
 		final HttpPost post = new HttpPost(requestUrl);
-
 		JsonNode returnNode = null;
 
 		try {
 			post.setEntity(new UrlEncodedFormEntity(params));
-
 			final HttpResponse response = client.execute(post);
-
 			ObjectMapper mapper = new ObjectMapper();
 
 			returnNode = mapper.readTree(response.getEntity().getContent());
