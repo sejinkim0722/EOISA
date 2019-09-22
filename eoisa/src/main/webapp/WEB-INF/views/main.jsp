@@ -51,7 +51,7 @@
 				</div>
 				<div id="div-search" class="col-lg-5 col-md-12">
 					<form id="form-search" method="POST" action="/search">
-						<input type="text" name="keyword" spellcheck="false" autocomplete="off" maxlength="20">
+						<input type="text" name="keyword" spellcheck="false" autocomplete="off" maxlength="10">
 						<input type="hidden"name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>
 					<i class="fas fa-search fa-2x"></i>
@@ -65,8 +65,7 @@
 				<ul class="navbar-nav">
 					<li class="nav-item home"><a href="/"><i class="fas fa-shopping-cart"></i> 어머이건사야해</a></li>
 					<li class="component-desktop" style="color: #ced1cc;">|</li>
-					<li class="nav-item rank"><a href="/rank"><i
-							class="fas fa-fire"></i> 핫딜 랭킹</a></li>
+					<li class="nav-item rank"><a href="/rank"><i class="fas fa-fire"></i> 핫딜 랭킹</a></li>
 					<li class="component-desktop" style="color: #ced1cc;">|</li>
 					<li class="nav-item theme">
 						<div class="dropdown">
@@ -426,7 +425,6 @@
 										</p>
 									</div>
 									<hr>
-									
 									<!-- Reply -->
 									<div class="reply-box-${deal.dealno}" style="display: none;">
 										<ul class="reply-list-${deal.dealno}"></ul>

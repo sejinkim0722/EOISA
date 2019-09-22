@@ -1,9 +1,5 @@
 package ksj.bitcamp.eoisa.controller;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -66,17 +61,15 @@ public class SignController {
 		return mv;
 	}
 
-	// Eoisa Sign Up & Social Sign
+	// Eoisa Signup & Social Signin
 	@PostMapping(value = "/signup")
 	public ModelAndView signup(SignDTO dto) {
-		dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt())); // Password Encryption
-
 		String signupResult = service.signupService(dto);
 		ModelAndView mv = new ModelAndView();
+		
 		switch(signupResult) {
 			case "EOISA":
-				String uuid = UUID.randomUUID().toString().replace("-", "");
-				service.insertEmailAuthInfoService(dto.getUsername(), uuid);
+				service.insertEmailAuthInfoService(dto.getUsername(), UUID.randomUUID().toString().replace("-", ""));
 				mv.setViewName("sign");
 				mv.addObject("status", signupResult);
 				break;
@@ -102,9 +95,9 @@ public class SignController {
 		int result = service.verifyUserService(username, uuid);
 
 		ModelAndView mv = new ModelAndView();
-		if (result == 1) {
+		if(result == 1) {
 			mv.addObject("result", "success");
-		} else if (result == 0) {
+		} else if(result == 0) {
 			mv.addObject("result", "fail");
 		}
 		mv.setViewName("verification");
@@ -182,7 +175,7 @@ public class SignController {
 	// Modify Userinfo
 	@PostMapping(value = "/modifyinfo")
 	public ResponseEntity<String> modifyUserProfile(SignDTO dto) {
-		if (dto.getPassword() != "") dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt())); // Password Encryption
+		if(dto.getPassword() != "") dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt())); // Password Encryption
 
 		return service.modifyUserProfileService(dto) >= 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>("fail", HttpStatus.OK);
 	}
@@ -190,30 +183,7 @@ public class SignController {
 	// Profile Picture Upload
 	@PostMapping(value = "/profileupload")
 	public String profileUpload(MultipartHttpServletRequest mpsr) {
-		String originalPath = "/var/eoisa/profile/";
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String uploadDate = sdf.format(new Date());
-		String uploadPath = originalPath + uploadDate + "/";
-		String saveFilename = "";
-
-		File dir = new File(uploadPath);
-		if(!dir.exists()) dir.mkdirs();
-
-		Iterator<String> files = mpsr.getFileNames();
-		while(files.hasNext()) {
-			String uploadFile = files.next();
-
-			MultipartFile mf = mpsr.getFile(uploadFile);
-			saveFilename = UUID.randomUUID().toString().replace("-", "");
-
-			try {
-				mf.transferTo(new File(uploadPath + saveFilename));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		return "https://eoisa.ml/resources/profile/" + uploadDate + "/" + saveFilename;
+		return service.profileUploadService(mpsr);
 	}
 	
 }

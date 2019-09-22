@@ -1,9 +1,18 @@
 package ksj.bitcamp.eoisa.service;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import ksj.bitcamp.eoisa.dao.SignDAO;
 import ksj.bitcamp.eoisa.dto.SignDTO;
@@ -20,6 +29,8 @@ public class SignServiceImpl implements SignService {
 
 	@Override
 	public String signupService(SignDTO dto) {
+		dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt())); // Password Encryption
+		
 		return dao.signup(dto);
 	}
 
@@ -67,7 +78,7 @@ public class SignServiceImpl implements SignService {
 	@Override
 	@Transactional
 	public String findPasswordService(String username) {
-		if (dao.findPassword(username).equals("notexist")) {
+		if(dao.findPassword(username).equals("notexist")) {
 			return "notexist";
 		} else {
 			try {
@@ -93,6 +104,34 @@ public class SignServiceImpl implements SignService {
 
 			return "exist";
 		}
+	}
+	
+	@Override
+	public String profileUploadService(MultipartHttpServletRequest mpsr) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		final String originalPath = "/var/eoisa/profile/";
+		String uploadDate = sdf.format(new Date());
+		String uploadPath = originalPath + uploadDate + "/";
+		String saveFilename = "";
+
+		File dir = new File(uploadPath);
+		if(!dir.exists()) dir.mkdirs();
+
+		Iterator<String> files = mpsr.getFileNames();
+		while(files.hasNext()) {
+			String uploadFile = files.next();
+
+			MultipartFile mf = mpsr.getFile(uploadFile);
+			saveFilename = UUID.randomUUID().toString().replace("-", "");
+
+			try {
+				mf.transferTo(new File(uploadPath + saveFilename));
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return "https://eoisa.ml/resources/profile/" + uploadDate + "/" + saveFilename;
 	}
 	
 }

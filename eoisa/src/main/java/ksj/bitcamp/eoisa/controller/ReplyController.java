@@ -53,9 +53,9 @@ public class ReplyController {
 	public ResponseEntity<String> manageReplyLikeit(@RequestBody ReplyDTO dto) {
 		int result = service.manageReplyLikeitService(dto);
 
-		if (result == 1) {
+		if(result == 1) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
-		} else if (result == 0) {
+		} else if(result == 0) {
 			return new ResponseEntity<>("checked", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

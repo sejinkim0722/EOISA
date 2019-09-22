@@ -14,10 +14,10 @@ $(document).ready(function() {
 	
     // Sticky Navbar
     $(function() {
-        var stickyToggle = function(sticky, stickyWrapper, scrollElement) {
-            var stickyHeight = sticky.outerHeight();
-            var stickyTop = stickyWrapper.offset().top;
-            if (scrollElement.scrollTop() >= stickyTop) {
+        let stickyToggle = function(sticky, stickyWrapper, scrollElement) {
+            let stickyHeight = sticky.outerHeight();
+            let stickyTop = stickyWrapper.offset().top;
+            if(scrollElement.scrollTop() >= stickyTop) {
                 stickyWrapper.height(stickyHeight);
                 sticky.addClass("is-sticky");
             } else {
@@ -27,8 +27,8 @@ $(document).ready(function() {
         };
 
         $("[data-toggle='sticky-onscroll']").each(function() {
-            var sticky = $(this);
-            var stickyWrapper = $("<div>").addClass("sticky-wrapper");
+            let sticky = $(this);
+            let stickyWrapper = $("<div>").addClass("sticky-wrapper");
             sticky.before(stickyWrapper);
             sticky.addClass("sticky");
 
@@ -60,7 +60,8 @@ $(document).ready(function() {
 	
     // Follow Sidebar
     $(function() {
-        var md = new MobileDetect(window.navigator.userAgent);
+        let md = new MobileDetect(window.navigator.userAgent);
+        
         if(md.mobile() == null && $(document).width() > 576){
     		$("#filter-body").addClass("show");
     		
@@ -86,7 +87,7 @@ $(document).ready(function() {
  	// Scrolltop btn
     $(function() {
         $(window).scroll(function() {
-            if ($(this).scrollTop() > 600) {
+            if($(this).scrollTop() > 600) {
                 $("#scrolltop").fadeIn();
             } else {
                 $("#scrolltop").fadeOut();
@@ -137,7 +138,7 @@ $(document).ready(function() {
 
     // Mobile Topnav Active Effect
     $(function() {            	
-        var url = $(location).attr("href");
+        let url = $(location).attr("href");
         
     	if(!url.includes("rank") && !url.includes("theme")) {
     		$(".nav-item.home").addClass("active");
@@ -168,7 +169,7 @@ $(document).ready(function() {
 
     // Clipboard Copy
     $(function() {                
-        var clipboard = new ClipboardJS(".btn-share");
+        const clipboard = new ClipboardJS(".btn-share");
 
 		clipboard.on("success", function(e) {
 			e.clearSelection();
@@ -183,10 +184,13 @@ $(document).ready(function() {
     // Wishlist
     $(function() {                
     	$(document).on("click", ".btn-wish", function() {
-    		var dealno = $(this).data("dealno");
-    		var username = $("input[name = 'username']").val();
+    		let dealno = $(this).data("dealno");
+    		let username = $("input[name = 'username']").val();
     		if(username == null) return false;
-    		var params = { username: username, dealno: dealno };
+    		let params = { 
+    			username: username,
+    			dealno: dealno
+    		};
     		
     		$.ajax({
     			type: "POST",
@@ -210,8 +214,8 @@ $(document).ready(function() {
     
     // Modify Userinfo
     $(function() {
-    	var nameCheck = true;
-    	var passCheck = true;
+    	let nameCheck = true;
+    	let passCheck = true;
     	
     	// Nickname Duplicate Check Button
     	$(document).on("change keyup paste", "#input-nickname", function() {
@@ -229,7 +233,7 @@ $(document).ready(function() {
     	
     	// Nickname Duplicate Check
 	    $(document).on("click", "#btn-namecheck", function() {
-	    	var nickname = $("#input-nickname").val();
+	    	let nickname = $("#input-nickname").val();
 	    	$.post("/nickname_check", { nickname: nickname }, function(data) {
 	    		if(data == "duplicated") {
 	    			$(".message-namecheck").css("color", "#ff5a5f");
@@ -246,7 +250,7 @@ $(document).ready(function() {
 	    // Password Check
 	    const passRegex = new RegExp("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$");
     	$(document).on("change keyup paste", "#input-password", function() {
-    		var password = $("#input-password").val();
+    		let password = $("#input-password").val();
     		if(passRegex.test(password)) {
     			$(".message-passwordcheck").css("color", "#8ce071").html("사용 가능한 비밀번호입니다.");
     			passCheck = true;
@@ -396,7 +400,7 @@ $(document).ready(function() {
 	});
     
 	// Ajax Infinite Scroll
-	var path = window.location.href + "/";
+	const path = window.location.href + "/";
 	var param = "";
 	var lastIndex = $(".total-page").data("value");
 	var initIS = function() {
@@ -461,7 +465,12 @@ $(document).ready(function() {
             $.ajax({
             	type: "GET",
             	url: "/filter/1",
-            	data: { region: params.regions, site: params.sites, shop: params.shops, isended: params.isended },
+            	data: { 
+            		region: params.regions,
+            		site: params.sites,
+            		shop: params.shops,
+            		isended: params.isended 
+            	},
             	dataType: "html",
             	success: function(data) {
             		$("#main-content-wrapper").infiniteScroll("destroy");

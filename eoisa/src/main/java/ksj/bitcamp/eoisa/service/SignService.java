@@ -1,5 +1,7 @@
 package ksj.bitcamp.eoisa.service;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import ksj.bitcamp.eoisa.dto.SignDTO;
 
 public interface SignService {
@@ -10,5 +12,6 @@ public interface SignService {
 	void insertEmailAuthInfoService(String username, String uuid);
 	int verifyUserService(String username, String uuid);
 	String findPasswordService(String username);
+	String profileUploadService(MultipartHttpServletRequest mpsr);
 	
 }

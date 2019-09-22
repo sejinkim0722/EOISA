@@ -34,7 +34,7 @@ public class MainController {
 
 	@Async
 	@Scheduled(fixedDelay = 600000)
-	public void crawling_algumon() {
+	public void crawling() {
 		MainDTO dto = new MainDTO();
 		service.crawlingService(dto);
 	}
@@ -159,9 +159,9 @@ public class MainController {
 	public ResponseEntity<String> wishlist(MainDTO dto) {
 		int result = service.manageWishlistService(dto);
 
-		if (result == 1) {
+		if(result == 1) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
-		} else if (result == 0) {
+		} else if(result == 0) {
 			return new ResponseEntity<>("full", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

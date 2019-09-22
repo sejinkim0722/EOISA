@@ -36,13 +36,14 @@ public class FcmDAOImpl implements FcmDAO {
 	private static final String NS_MAIN = "ksj.bitcamp.eoisa.dto.MainDTO";
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void pushMessaging() {
 		try {
 			int current = sqlSession.selectOne(NS_MAIN + ".dealCount");
 			TimeUnit.MILLISECONDS.sleep(60000);
 			int after = sqlSession.selectOne(NS_MAIN + ".dealCount");
 
-			if (after > current) {
+			if(after > current) {
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
 				headers.add("Authorization", "Bearer " + getAccessToken());
@@ -70,7 +71,7 @@ public class FcmDAOImpl implements FcmDAO {
 
 				ResponseEntity<String> res = rt.exchange(BASE_URL + FCM_SEND_ENDPOINT, HttpMethod.POST, httpEntity, String.class);
 
-				if (res.getStatusCode() == HttpStatus.OK) {
+				if(res.getStatusCode() == HttpStatus.OK) {
 					System.out.println("Push sent Successfully : HTTP Status " + res.getStatusCode().toString());
 				} else {
 					System.out.println("Push send Failure : HTTP Status " + res.getStatusCode().toString());
@@ -78,7 +79,7 @@ public class FcmDAOImpl implements FcmDAO {
 			} else {
 				System.out.println("New Hotdeals does not exists");
 			}
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -98,9 +99,9 @@ public class FcmDAOImpl implements FcmDAO {
 		HttpEntity<JSONObject> httpEntity = new HttpEntity<JSONObject>(headers);
 		RestTemplate rt = new RestTemplate();
 
-		if (request.equals("subscribe")) {
+		if(request.equals("subscribe")) {
 			rt.exchange(BASE_URL_IID + clientToken + "/rel/topics/new", HttpMethod.POST, httpEntity, String.class);
-		} else if (request.equals("unsubscribe")) {
+		} else if(request.equals("unsubscribe")) {
 			rt.exchange(BASE_URL_IID + clientToken + "/rel/topics/new", HttpMethod.DELETE, httpEntity, String.class);
 		}
 	}
