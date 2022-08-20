@@ -9,3 +9,4 @@
 * 자체 로그인 및 `OAuth` 소셜 로그인(`Naver`, `Kakao`) 기능을 제공합니다.
 * `Spring Security`를 활용하여 기본적인 로그인, 비밀번호 암호화, 접근 권한 제어 기능을 구현하였습니다.
 * `PWA` + `FCM`을 활용한 `Push notification`, `A2HS(Add To Home Screen)` 기능을 구현하였습니다.
+* 기본적인 어드민 페이지도 구현되어 있습니다.
